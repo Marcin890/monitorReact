@@ -1,0 +1,21 @@
+$theme-colors: (
+    "danger": #ff007c,
+    "success": #01b5d6,
+    "info": #3d09a2,
+    "warning": #00ccf2,
+    "primary": #2d62ed
+);
+
+
+
+/* import bootstrap to set changes */
+@import "~bootstrap/scss/bootstrap";
+
+@include media-breakpoint-down(sm) {
+    td,
+    th {
+        padding-left: 0rem !important;
+        padding-right: 0rem !important;
+        font-size: 0.75rem !important;
+    }
+}
