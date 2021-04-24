@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'NMS') }}</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -23,7 +23,7 @@
 
 <body>
     <div id="app" class="">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark  bg-info shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="" {{ route('boardIndex') }}">
                     News
@@ -81,9 +81,10 @@
             </div>
         </nav>
 
-        <main class="py-4 min-vh-100">
+        <main class="py-4 min-vh-100 main-background">
             @yield('content')
         </main>
+
         @include('partials.footer')
 
     </div>

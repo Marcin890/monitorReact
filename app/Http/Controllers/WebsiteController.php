@@ -94,7 +94,7 @@ class WebsiteController extends Controller
     public function update(Request $request)
     {
         $website = Website::find($request->websiteId);
-
+        $this->authorize('checkOwner', $website);
         $website->name = $request->name;
         $website->url = $request->url;
         $website->selector = $request->selector;
@@ -114,7 +114,7 @@ class WebsiteController extends Controller
     public function destroy($id)
     {
         $website = Website::find($id);
-
+        $this->authorize('checkOwner', $website);
         $website->delete();
         return response()->json($website);
     }

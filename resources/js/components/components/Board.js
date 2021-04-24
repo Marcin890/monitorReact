@@ -23,6 +23,8 @@ const Board = ({ match }) => {
     const boardId = match.params.id;
 
     const [data, setData] = useState();
+    const [testData, setTestData] = useState("");
+    const [showTestData, setShowTestData] = useState(false);
     const [users, setUsers] = useState();
     const [formData, setFormData] = useState(null);
     const [show, setShow] = useState(false);
@@ -30,26 +32,25 @@ const Board = ({ match }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [alert, setAlert] = useState({});
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const url = `http://localhost:8000/admin/showBoard/${boardId}`;
-
     useEffect(() => {
-        const fetchData = async () => {
-            setIsError(false);
-            setIsLoading(true);
-            try {
-                const result = await axios(url);
-                setData(result.data);
-            } catch (error) {
-                setIsError(true);
-            }
-            setIsLoading(false);
-        };
+        fetchData(`http://localhost:8000/admin/showBoard/${boardId}`);
+    }, []);
 
-        fetchData();
-    }, [url]);
+    const fetchData = async url => {
+        setIsError(false);
+        setIsLoading(true);
+        try {
+            const result = await axios(url);
+            setData(result.data);
+        } catch (error) {
+            setIsError(true);
+        }
+        setIsLoading(false);
+    };
 
     const addWebsite = web => {
         axios
@@ -67,16 +68,12 @@ const Board = ({ match }) => {
                     ...restOfData,
                     websites: updatedWebsites
                 };
+
                 setData(updatedData);
-            });
-        setAlert({
-            view: true,
-            text: "Website has been added!",
-            variant: "success"
-        });
-        setTimeout(() => {
-            setAlert({});
-        }, 5000);
+                showAlert("Website has been added", "success");
+            })
+            .catch(error => showError(error));
+
         setShow(false);
     };
 
@@ -103,57 +100,88 @@ const Board = ({ match }) => {
                     websites: updatedWebsites
                 };
                 setData(updatedData);
-            });
-        setAlert({
-            view: true,
-            text: "Website has been edited!",
-            variant: "success"
-        });
-        setTimeout(() => {
-            setAlert({});
-        }, 5000);
+                showAlert("Website has been edited", "success");
+            })
+            .catch(error => showError(error));
+
         setShow(false);
     };
 
-    const deleteBoardConfirmation = id => {
-        confirmAlert(
-            {
-                title: "Confirm to submit",
-                message: "Are you sure to do this.",
-                buttons: [
-                    {
-                        label: "Yes",
-                        onClick: () => deleteWebsite(id)
-                    },
-                    {
-                        label: "No",
-                        onClick: () => console.log(id)
-                    }
-                ]
-            },
-            id
-        );
+    const testWebsite = data => {
+        setIsLoading(true);
+        axios
+            .post(`/admin/testWebsite`, {
+                url: data.url,
+                selector: data.selector
+            })
+            .then(response => {
+                setTestData(response.data);
+                setShowTestData(true);
+            });
+        setIsLoading(false);
     };
 
     const deleteWebsite = id => {
-        axios.get(`/admin/deleteWebsite/${id}`).then(response => {
-            const { websites, ...restOfData } = data;
-            const updatedWebsites = websites.filter(
-                website => website.id !== response.data.id
-            );
-            const updatedData = { ...restOfData, websites: updatedWebsites };
-            setData(updatedData);
-        });
-        setAlert({
-            view: true,
-            text: "Website has been deleted!",
-            variant: "danger"
-        });
-        setTimeout(() => {
-            setAlert({});
-        }, 5000);
+        axios
+            .get(`/admin/deleteWebsite/${id}`)
+            .then(response => {
+                const { websites, ...restOfData } = data;
+                const updatedWebsites = websites.filter(
+                    website => website.id !== response.data.id
+                );
+                const updatedData = {
+                    ...restOfData,
+                    websites: updatedWebsites
+                };
+                setData(updatedData);
+            })
+            .catch(error => showError(error));
+        showAlert("Website has been deleted", "danger");
     };
 
+    const deleteBoardConfirmation = id => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <Modal
+                        show={true}
+                        onHide={handleClose}
+                        animation={true}
+                        size="lg"
+                        aria-labelledby="contained-modal-title-vcenter"
+                        centered
+                    >
+                        <Modal.Header>
+                            <h1>Are you sure?</h1>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="d-flex justify-content-between">
+                                <Button
+                                    onClick={onClose}
+                                    variant="info"
+                                    type="button"
+                                    size="sm"
+                                >
+                                    No
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        deleteWebsite(id);
+                                        onClose();
+                                    }}
+                                    variant="danger"
+                                    type="button"
+                                    size="sm"
+                                >
+                                    Yes, Delete it!
+                                </Button>
+                            </div>
+                        </Modal.Body>
+                    </Modal>
+                );
+            }
+        });
+    };
     const addUserToBoard = id => {
         axios
             .post(`/admin/addUserToBoard`, {
@@ -169,14 +197,7 @@ const Board = ({ match }) => {
                 };
                 setData(updatedData);
             });
-        setAlert({
-            view: true,
-            text: "User has been added!",
-            variant: "success"
-        });
-        setTimeout(() => {
-            setAlert({});
-        }, 5000);
+        showAlert("User has been added", "success");
     };
 
     const removeUserFromBoard = id => {
@@ -196,10 +217,14 @@ const Board = ({ match }) => {
                 };
                 setData(updatedData);
             });
+        showAlert("User has been removed", "danger");
+    };
+
+    const showAlert = (text, variant) => {
         setAlert({
             view: true,
-            text: "User has been removed!",
-            variant: "danger"
+            text: `${text}`,
+            variant: variant
         });
         setTimeout(() => {
             setAlert({});
@@ -240,6 +265,7 @@ const Board = ({ match }) => {
                         variant="info"
                         type="button"
                         size="sm"
+                        className="btn-circle"
                     >
                         <BsPencilSquare />
                     </Button>
@@ -257,6 +283,7 @@ const Board = ({ match }) => {
                         variant="danger"
                         type="button"
                         size="sm"
+                        className="btn-circle"
                     >
                         <BsFillTrashFill />
                     </Button>
@@ -285,6 +312,7 @@ const Board = ({ match }) => {
                         variant="danger"
                         type="button"
                         size="sm"
+                        className="btn-circle"
                     >
                         <BsFillTrashFill />
                     </Button>
@@ -303,9 +331,18 @@ const Board = ({ match }) => {
         setShow(true);
     };
 
-    console.log(data);
+    const showError = error => {
+        if (error.response) {
+            showAlert("Error of response", "danger");
+        } else if (error.request) {
+            showAlert("Error of request", "danger");
+        } else {
+            showAlert("Something go wrong", "danger");
+        }
+    };
     return (
         <>
+            {isLoading && <LoaderData />}
             {alert.view && (
                 <Alert
                     variant={alert.variant}
@@ -315,6 +352,23 @@ const Board = ({ match }) => {
                     {alert.text}
                 </Alert>
             )}
+            <Modal
+                show={showTestData}
+                onHide={() => setShowTestData(false)}
+                animation={true}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header closeButton className="modal-test"></Modal.Header>
+                <Modal.Body className="modal-test">
+                    {testData.length ? (
+                        testData.map((item, index) => <p key={index}>{item}</p>)
+                    ) : (
+                        <p>No results</p>
+                    )}
+                </Modal.Body>
+            </Modal>
 
             <Modal
                 show={show}
@@ -330,6 +384,7 @@ const Board = ({ match }) => {
                         addWebsite={addWebsite}
                         web={formData}
                         editWebsite={editWebsite}
+                        testWebsite={testWebsite}
                     />
                 </Modal.Body>
             </Modal>
@@ -349,7 +404,7 @@ const Board = ({ match }) => {
             </Modal>
 
             {isError && "aa"}
-            {isLoading && <LoaderData />}
+
             {data && (
                 <>
                     <h2 className="mt-5">Websites</h2>

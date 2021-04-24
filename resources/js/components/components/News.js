@@ -31,8 +31,8 @@ const News = ({ match }) => {
     };
 
     useEffect(() => {
-        const result = fetchData(url);
-    }, [url]);
+        fetchData(`http://localhost:8000/admin/showBoardNews/${boardId}`);
+    }, []);
 
     const refreshBoardNews = async () => {
         setIsError(false);
@@ -71,6 +71,26 @@ const News = ({ match }) => {
         });
     };
 
+    const readAllNews = id => {
+        axios.get(`/admin/readAllNews/${id}`).then(response => {
+            const { websites, ...restData } = data;
+            const updatedWebsites = websites.map(website => {
+                if (website.id === id) {
+                    website.news = response.data;
+                    return website;
+                } else {
+                    return website;
+                }
+            });
+            const updatedData = {
+                ...restData,
+                websites: updatedWebsites
+            };
+
+            setData(updatedData);
+        });
+    };
+
     const newsPreview = url => {
         // axios
         //     .post("/admin/newsPreview", {
@@ -91,13 +111,13 @@ const News = ({ match }) => {
                 filter={filter}
                 readNews={readNews}
                 newsPreview={newsPreview}
+                readAllNews={readAllNews}
             />
         ));
 
         return websitesNews;
     };
-
-    console.log(preview);
+    console.log(data);
     return (
         <>
             <Modal

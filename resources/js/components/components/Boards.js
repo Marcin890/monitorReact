@@ -11,7 +11,8 @@ import {
     BsFillEyeFill,
     BsNewspaper,
     BsPencilSquare,
-    BsPlus
+    BsPlus,
+    BsWrench,
 } from "react-icons/bs";
 import Moment from "react-moment";
 import LoaderData from "./LoaderData";
@@ -22,87 +23,20 @@ function Boards() {
     const [isError, setIsError] = useState(false);
     const [alert, setAlert] = useState({});
     const [show, setShow] = useState(false);
+    const [formData, setFormData] = useState(null);
+
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const url = "http://localhost:8000/admin/showUserBoards";
 
     useEffect(() => {
-        const fetchData = async () => {
-            setIsError(false);
-            setIsLoading(true);
-            try {
-                const result = await axios(url);
-                setData(result.data);
-            } catch (error) {
-                setIsError(true);
-            }
-            setIsLoading(false);
-        };
+        fetchData("http://localhost:8000/admin/showUserBoards");
+    }, []);
 
-        fetchData();
-    }, [url]);
-
-    const addBoard = name => {
-        axios
-            .post("/admin/createBoard", {
-                name: name
-            })
-            .then(response => {
-                setData([response.data, ...data]);
-            });
-        setAlert({
-            view: true,
-            text: "Board has been added!",
-            variant: "success"
-        });
-        setTimeout(() => {
-            setAlert({});
-        }, 5000);
-        setShow(false);
-    };
-
-    const deleteBoardConfirmation = id => {
-        confirmAlert(
-            {
-                title: "Confirm to submit",
-                message: "Are you sure to do this.",
-                buttons: [
-                    {
-                        label: "Yes",
-                        onClick: () => deleteBoard(id)
-                    },
-                    {
-                        label: "No",
-                        onClick: () => console.log(id)
-                    }
-                ]
-            },
-            id
-        );
-    };
-
-    const deleteBoard = id => {
-        axios
-            .get(`/admin/destroyBoard/${id}`)
-            .then(response =>
-                setData(data.filter(data => data.id !== response.data.id))
-            );
-        setAlert({
-            view: true,
-            text: "Board has been deleted!",
-            variant: "danger"
-        });
-        setTimeout(() => {
-            setAlert({});
-        }, 5000);
-    };
-
-    const refreshAllBoardNews = async () => {
+    const fetchData = async (url) => {
         setIsError(false);
         setIsLoading(true);
         try {
-            const result = await axios(`/admin/refreshAllBoardNews`);
-            console.log(result.data);
+            const result = await axios(url);
             setData(result.data);
         } catch (error) {
             setIsError(true);
@@ -110,66 +44,214 @@ function Boards() {
         setIsLoading(false);
     };
 
+    const addBoard = (name) => {
+        axios
+            .post("/admin/createBoard", {
+                name: name,
+            })
+            .then((response) => {
+                setData([response.data, ...data]);
+                showAlert("Board has been added", "success");
+            })
+            .catch((error) => showError(error));
+        setShow(false);
+    };
+
+    const editBoard = (board) => {
+        axios
+            .post(`/admin/updateBoard`, {
+                name: board.name,
+                boardId: board.id,
+            })
+            .then((response) => {
+                const updateBoards = data.map((item) => {
+                    if (item.id === response.data.id) {
+                        item.name = response.data.name;
+                        return item;
+                    } else {
+                        return item;
+                    }
+                });
+                setData(updateBoards);
+                showAlert("Board has been edited", "success");
+            })
+            .catch((error) => showError(error));
+        setShow(false);
+    };
+
+    const deleteBoard = (id) => {
+        axios
+            .get(`/admin/destroyBoard/${id}`)
+            .then((response) =>
+                setData(data.filter((data) => data.id !== response.data.id))
+            );
+        showAlert("Board has been deleted", "danger");
+    };
+
+    const showError = (error) => {
+        if (error.response) {
+            showAlert("Error of response", "danger");
+        } else if (error.request) {
+            showAlert("Error of request", "danger");
+        } else {
+            showAlert("Something go wrong", "danger");
+        }
+    };
+
+    const deleteBoardConfirmation = (id) => {
+        confirmAlert({
+            customUI: ({ onClose }) => {
+                return (
+                    <Modal
+                        show={true}
+                        onHide={handleClose}
+                        animation={true}
+                        size="lg"
+                        aria-labelledby="contained-modal-title-vcenter"
+                        centered
+                    >
+                        <Modal.Header>
+                            <h1>Are you sure?</h1>
+                        </Modal.Header>
+                        <Modal.Body>
+                            <div className="d-flex justify-content-between">
+                                <Button
+                                    onClick={onClose}
+                                    variant="info"
+                                    type="button"
+                                    size="sm"
+                                >
+                                    No
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        deleteBoard(id);
+                                        onClose();
+                                    }}
+                                    variant="danger"
+                                    type="button"
+                                    size="sm"
+                                >
+                                    Yes, Delete it!
+                                </Button>
+                            </div>
+                        </Modal.Body>
+                    </Modal>
+                );
+            },
+        });
+    };
+
+    const showAlert = (text, variant) => {
+        setAlert({
+            view: true,
+            text: `${text}`,
+            variant: variant,
+        });
+        setTimeout(() => {
+            setAlert({});
+        }, 5000);
+    };
+
+    const refreshAllBoardNews = async () => {
+        fetchData(`/admin/refreshAllBoardNews`);
+    };
+
+    const editBoardForm = (board) => {
+        setFormData(board);
+        setShow(true);
+    };
+
+    const addBoardForm = () => {
+        setFormData(null);
+        setShow(true);
+    };
+
     const columns = [
         {
             Header: "Name",
-            accessor: "name"
+            accessor: "name",
         },
         {
-            Header: "Refresh",
+            Header: "Refr.",
             id: "time",
             accessor: "updated_at",
             Cell: ({ row }) => (
                 <>
-                    <Moment format="HH:mm DD-MM">
-                        {row.original.updated_at}
+                    <Moment format="HH:mm">{row.original.updated_at}</Moment>
+                    <br />
+                    <Moment format="DD.MM">
+                        <strong>{row.original.updated_at}</strong>
                     </Moment>
                 </>
-            )
+            ),
         },
         {
-            Header: "Unread",
+            Header: "News",
             id: "unreaded_news",
             accessor: "unreaded_news",
             Cell: ({ row }) => (
                 <>
-                    {row.original.unreaded_news > 0 ? (
-                        <Badge variant="danger" pill>
-                            {row.original.unreaded_news}
-                        </Badge>
-                    ) : (
-                        <Badge variant="success" pill>
-                            {row.original.unreaded_news}
-                        </Badge>
-                    )}
-                </>
-            )
-        },
-        {
-            Header: "News",
-            id: "aa",
-            Cell: ({ row }) => (
-                <>
                     <Link to={`/admin/showBoardNews/${row.original.id}`}>
-                        <Button variant="success" type="button" size="sm">
-                            <BsFillEyeFill />
-                        </Button>
+                        {row.original.unreaded_news > 0 ? (
+                            <Button
+                                variant="outline-danger"
+                                type="button"
+                                size="sm"
+                                className="btn-circle"
+                            >
+                                {row.original.unreaded_news}
+                            </Button>
+                        ) : (
+                            <Button
+                                variant="outline-success"
+                                type="button"
+                                size="sm"
+                                className="btn-circle"
+                            >
+                                {row.original.unreaded_news}
+                            </Button>
+                        )}
                     </Link>
                 </>
-            )
+            ),
         },
+
         {
             Header: "Board",
             id: "bbb",
             Cell: ({ row }) => (
                 <>
                     <Link to={`/admin/board/${row.original.id}`}>
-                        <Button variant="primary" type="button" size="sm">
-                            <BsPencilSquare />
+                        <Button
+                            variant="primary"
+                            type="button"
+                            size="sm"
+                            className="btn-circle"
+                        >
+                            <BsFillEyeFill />
                         </Button>
                     </Link>
                 </>
-            )
+            ),
+        },
+        {
+            Header: "Edit",
+            id: "edit",
+            Cell: ({ row }) => (
+                <>
+                    <Button
+                        id={row.original.id}
+                        onClick={(e) => editBoardForm(row.original)}
+                        variant="info"
+                        type="button"
+                        size="sm"
+                        className="btn-circle"
+                    >
+                        <BsWrench />
+                    </Button>
+                </>
+            ),
         },
         {
             Header: "Delete",
@@ -178,18 +260,21 @@ function Boards() {
                 <>
                     <Button
                         id={row.original.id}
-                        onClick={e => deleteBoardConfirmation(row.original.id)}
+                        onClick={(e) =>
+                            deleteBoardConfirmation(row.original.id)
+                        }
                         variant="danger"
                         type="button"
                         size="sm"
+                        className="btn-circle"
                     >
                         <BsFillTrashFill />
                     </Button>
                 </>
-            )
-        }
+            ),
+        },
     ];
-    console.log(data);
+
     return (
         <>
             {alert.view && (
@@ -212,7 +297,11 @@ function Boards() {
             >
                 <Modal.Header closeButton></Modal.Header>
                 <Modal.Body>
-                    <AddBoardForm addBoard={addBoard} />
+                    <AddBoardForm
+                        addBoard={addBoard}
+                        boardToEdit={formData}
+                        editBoard={editBoard}
+                    />
                 </Modal.Body>
             </Modal>
 
@@ -220,10 +309,10 @@ function Boards() {
 
             <h2 className="mt-5">Boards</h2>
             <div className="d-flex justify-content-between mt-3">
-                <Button variant="success" onClick={handleShow}>
-                    <BsPlus /> Add New Board
+                <Button variant="success" onClick={addBoardForm}>
+                    <BsPlus /> Add Board
                 </Button>
-                <Button onClick={refreshAllBoardNews}>Refresh All</Button>
+                <Button onClick={refreshAllBoardNews}>Refresh </Button>
             </div>
             {isLoading && <LoaderData />}
 

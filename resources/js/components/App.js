@@ -17,7 +17,7 @@ function App() {
                                 <Navigation />
                             </div>
 
-                            <div className="col-md-10">
+                            <div className="col-md-10 ">
                                 <Page />
                             </div>
                         </div>

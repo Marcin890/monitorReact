@@ -4,11 +4,15 @@ import { useForm } from "react-hook-form";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 
-const AddBoardForm = ({ addBoard }) => {
+const AddBoardForm = ({ addBoard, editBoard, boardToEdit }) => {
     const { register, handleSubmit, watch, errors } = useForm();
 
     const onSubmit = data => {
-        addBoard(data.name);
+        if (!boardToEdit) {
+            addBoard(data.name);
+        } else {
+            editBoard(data);
+        }
     };
 
     return (
@@ -21,8 +25,16 @@ const AddBoardForm = ({ addBoard }) => {
                         name="name"
                         type="text"
                         ref={register({ minLength: 3 })}
+                        defaultValue={boardToEdit && boardToEdit.name}
                     />
                     {errors.name && <span>At least 3 characters</span>}
+                    <Form.Control
+                        name="id"
+                        type="hidden"
+                        ref={register}
+                        defaultValue={boardToEdit && boardToEdit.id}
+                        // ref={register({ minLength: 3 })}
+                    />
                 </Form.Group>
 
                 <Form.Group>

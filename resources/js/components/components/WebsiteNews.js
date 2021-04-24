@@ -4,9 +4,15 @@ import { Button } from "react-bootstrap";
 import Moment from "react-moment";
 import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
-import { BsFillEyeFill, BsCheckBox, BsLink } from "react-icons/bs";
+import { BsFillEyeFill, BsCheck, BsLink, BsArrowRight } from "react-icons/bs";
 
-const WebsiteNews = ({ website, filter, readNews, newsPreview }) => {
+const WebsiteNews = ({
+    website,
+    filter,
+    readNews,
+    newsPreview,
+    readAllNews
+}) => {
     const filterNews = () => {
         if (filter !== "all") {
             return website.news.filter(news => news.status === filter);
@@ -18,7 +24,12 @@ const WebsiteNews = ({ website, filter, readNews, newsPreview }) => {
     const newsColumn = [
         {
             Header: "Content",
-            accessor: "content"
+            accessor: "content",
+            Cell: ({ row }) => (
+                <>
+                    <span className="text-break">{row.original.content}</span>
+                </>
+            )
         },
         {
             Header: "Uploded",
@@ -26,8 +37,10 @@ const WebsiteNews = ({ website, filter, readNews, newsPreview }) => {
             accessor: "updated_at",
             Cell: ({ row }) => (
                 <>
-                    <Moment format="HH:mm DD-MM">
-                        {row.original.created_at}
+                    <Moment format="HH:mm">{row.original.updated_at}</Moment>
+                    <br />
+                    <Moment format="DD.MM">
+                        <strong>{row.original.updated_at}</strong>
                     </Moment>
                 </>
             )
@@ -45,11 +58,16 @@ const WebsiteNews = ({ website, filter, readNews, newsPreview }) => {
                             variant="success"
                             type="button"
                             size="sm"
+                            className="btn-circle"
                         >
-                            <BsCheckBox />
+                            <BsCheck />
                         </Button>
                     ) : (
-                        "readed"
+                        `${
+                            row.original.user.name
+                                ? row.original.user.name
+                                : "read"
+                        }`
                     )}
                 </>
             )
@@ -67,44 +85,48 @@ const WebsiteNews = ({ website, filter, readNews, newsPreview }) => {
                             variant="info"
                             type="button"
                             size="sm"
+                            className="btn-circle"
                         >
-                            <BsLink />
+                            <BsArrowRight />
                         </Button>
                     </a>
                 </>
             )
-        },
-        {
-            Header: "Preview",
-            id: "preview",
-            accessor: "url",
-            Cell: ({ row }) => (
-                <>
-                    <Button
-                        id={row.original.id}
-                        variant="primary"
-                        type="button"
-                        size="sm"
-                        onClick={() => newsPreview(row.original.url)}
-                    >
-                        <BsFillEyeFill />
-                    </Button>
-                </>
-            )
         }
+        // {
+        //     Header: "Preview",
+        //     id: "preview",
+        //     accessor: "url",
+        //     Cell: ({ row }) => (
+        //         <>
+        //             <Button
+        //                 id={row.original.id}
+        //                 variant="primary"
+        //                 type="button"
+        //                 size="sm"
+        //                 onClick={() => newsPreview(row.original.url)}
+        //                 className="btn-circle"
+        //             >
+        //                 <BsFillEyeFill />
+        //             </Button>
+        //         </>
+        //     )
+        // }
     ];
-    console.log(website);
     return (
         <>
             <Card className="mt-5">
                 <Card.Header>
-                    <h2>
+                    <h4>
                         <a target="_blank" href={website.url}>
                             {website.name}
                         </a>
-                    </h2>
+                    </h4>
                 </Card.Header>
                 <Card.Body>
+                    <Button onClick={() => readAllNews(website.id)}>
+                        Read All
+                    </Button>
                     <DataTable data={filterNews()} columns={newsColumn} />
                 </Card.Body>
             </Card>

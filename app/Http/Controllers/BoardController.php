@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Http\Request;
 use App\{Board, Website, User};
 use \Illuminate\Foundation\Validation\ValidatesRequests;
@@ -56,6 +58,7 @@ class BoardController extends Controller
      */
     public function create(Request $request)
     {
+
 
 
         $this->validate($request, [
@@ -133,9 +136,17 @@ class BoardController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+
+
+    public function update(Request $request)
     {
-        //
+
+        $board = Board::find($request->boardId);
+        $this->authorize('checkOwner', $board);
+        $board->name = $request->name;
+        $board->save();
+        return response()->json($board);
     }
 
     /**
@@ -148,6 +159,7 @@ class BoardController extends Controller
     {
 
         $board = Board::find($id);
+        $this->authorize('checkOwner', $board);
         $board->delete();
 
 

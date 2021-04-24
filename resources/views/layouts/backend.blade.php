@@ -36,11 +36,11 @@
 </head>
 
 <body>
-    <div class="col-md-12">
-        @include('backend.partials.navigation.main')
-        <div id="root"></div>
-        @include('partials.footer')
-    </div>
+
+    @include('backend.partials.navigation.main')
+    <div id="root"></div>
+    @include('partials.footer')
+
 </body>
 
 </html>

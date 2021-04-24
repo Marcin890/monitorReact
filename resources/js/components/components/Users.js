@@ -52,6 +52,7 @@ const Users = ({ boardId, addUserToBoard }) => {
                         variant="success"
                         type="button"
                         size="sm"
+                        className="btn-circle"
                     >
                         +
                     </Button>

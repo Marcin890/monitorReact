@@ -86,6 +86,10 @@ class NewsController extends Controller
     {
         $user = $request->user();
         $user_id = $request->user()->id;
+
+        $newsToCheck = News::find($id);
+        $this->authorize('checkOwner', $newsToCheck);
+
         $news = $this->nR->readNews($id, $user_id);
 
         return response()->json([
@@ -100,7 +104,12 @@ class NewsController extends Controller
 
         $user_id = $request->user()->id;
         $this->nR->readAllNews($website_id, $user_id);
-        return redirect()->back();
+        $website = Website::find($website_id);
+
+        $news = $website->news;
+
+
+        return $news;
     }
 
     public function articleNews($id, Request $request)
@@ -136,5 +145,20 @@ class NewsController extends Controller
         $news = $this->nR->getNewsPreview($url);
         return $news;
         // return response()->json($news);
+    }
+
+    public function testWebsite(Request $request)
+    {
+
+        $news = $this->nR->downloadNews($request->url, $request->selector);
+
+        $news_array = array();
+
+        foreach ($news as $new) {
+            $n = strip_tags($new);
+            array_push($news_array, $n);
+        }
+
+        return $news_array;
     }
 }

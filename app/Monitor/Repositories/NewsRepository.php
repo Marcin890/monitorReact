@@ -34,8 +34,6 @@ class NewsRepository
         return $unredNews;
     }
 
-
-
     public function readNews($id, $user_id)
     {
         $news = News::find($id);

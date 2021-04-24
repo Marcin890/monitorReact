@@ -33,6 +33,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/showUsersOffBoard' . '/{id}', 'BoardController@showUsersOffBoard')->name('showUsersOffBoard');
 
 
+    Route::post('/updateBoard', 'BoardController@update')->name('updateBoard');
+
 
     // Websites
 
@@ -45,6 +47,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/editWebsite' . '/{id}', 'WebsiteController@edit')->name('editWebsite');
 
     Route::post('/updateWebsite', 'WebsiteController@update')->name('updateWebsite');
+
+    Route::post('/testWebsite', 'NewsController@testWebsite')->name('testWebsite');
 
 
 
@@ -65,6 +69,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::get('/showUserArticles', 'NewsController@showUserArticles')->name('showUserArticles');
 
     Route::post('/newsPreview', 'NewsController@newsPreview')->name('newsPreview');
+
+
+
 
     // User
     Route::post('/addUserToBoard', 'BoardController@addUserToBoard')->name('addUserToBoard');
