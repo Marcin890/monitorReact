@@ -56,7 +56,6 @@ class NewsController extends Controller
             $currentNews = News::with('user')->where('website_id', $website->id)->get()->toArray();
 
 
-
             $unread = News::where([
                 ['website_id', $website->id],
                 ['status', 'unread']
@@ -80,6 +79,10 @@ class NewsController extends Controller
             'websites' => $newsArray,
             'updated' => $board->updated_at
         ]);
+    }
+
+    public function showWebsiteNews($id)
+    {
     }
 
     public function readNews($id, Request $request)
