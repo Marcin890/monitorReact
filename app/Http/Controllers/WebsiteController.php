@@ -46,6 +46,8 @@ class WebsiteController extends Controller
             'created_at' => new \DateTime(),
         ]);
 
+        $this->nR->checkSaveWebsiteNews($savedWebsite->id);
+
 
         return response()->json($savedWebsite);
     }

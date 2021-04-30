@@ -12,24 +12,21 @@ const Typography = () => {
     const [text, setText] = useState("");
     const [showAlert, setShowAlert] = useState(false);
 
-    const updateText = text => {
+    const updateText = (text) => {
         setText(text);
     };
 
-    const copyAlert = () => {
-        return (
-            <Row>
-                <Col>
-                    <Alert variant="success">
-                        <p>Skopiowałeś tekst</p>
-                    </Alert>
-                </Col>
-            </Row>
-        );
-    };
     return (
         <Container>
-            {showAlert && copyAlert()}
+            {showAlert && (
+                <Alert
+                    variant="success"
+                    onClose={() => setAlert({})}
+                    dismissible
+                >
+                    The text has been copied
+                </Alert>
+            )}
             <Row>
                 <h2 className="mt-5">Better Typography</h2>
             </Row>

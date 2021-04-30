@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "./DataTable";
 import { Button } from "react-bootstrap";
+import { URL } from "../../constants/constants";
 
 const Users = ({ boardId, addUserToBoard }) => {
-    const url = `http://localhost:8000/admin/showUsersOffBoard/${boardId}`;
+    const url = `${URL}/admin/showUsersOffBoard/${boardId}`;
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [data, setData] = useState();
 
-    const removeUserFromList = id => {
-        const updatedData = data.filter(item => item.id !== id);
+    const removeUserFromList = (id) => {
+        const updatedData = data.filter((item) => item.id !== id);
         setData(updatedData);
     };
 
@@ -32,11 +33,11 @@ const Users = ({ boardId, addUserToBoard }) => {
     const userColumns = [
         {
             Header: "Name",
-            accessor: "name"
+            accessor: "name",
         },
         {
             Header: "Email",
-            accessor: "email"
+            accessor: "email",
         },
         {
             Header: "Add",
@@ -45,7 +46,7 @@ const Users = ({ boardId, addUserToBoard }) => {
                 <>
                     <Button
                         id={row.original.id}
-                        onClick={e => {
+                        onClick={(e) => {
                             addUserToBoard(row.original.id);
                             removeUserFromList(row.original.id);
                         }}
@@ -57,8 +58,8 @@ const Users = ({ boardId, addUserToBoard }) => {
                         +
                     </Button>
                 </>
-            )
-        }
+            ),
+        },
     ];
     return (
         <>

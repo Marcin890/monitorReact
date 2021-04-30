@@ -70,6 +70,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     Route::post('/newsPreview', 'NewsController@newsPreview')->name('newsPreview');
 
+    Route::post('/searchNews', 'NewsController@searchNews')->name('searchNews');
+
 
 
 

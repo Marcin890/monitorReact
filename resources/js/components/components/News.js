@@ -5,11 +5,13 @@ import { Button, Modal } from "react-bootstrap";
 import Filter from "./Filter";
 import LoaderData from "./LoaderData";
 import Iframe from "react-iframe";
+import { URL } from "../../constants/constants";
 
 const News = ({ match }) => {
     const boardId = match.params.id;
+
+    const url = `${URL}/admin/showBoardNews/${boardId}`;
     const [data, setData] = useState();
-    const url = `http://localhost:8000/admin/showBoardNews/${boardId}`;
     let [loading, setLoading] = useState(true);
     const [isError, setIsError] = useState(false);
     const [filter, setFilter] = useState("unread");
@@ -18,7 +20,7 @@ const News = ({ match }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const fetchData = async url => {
+    const fetchData = async (url) => {
         setIsError(false);
         setLoading(true);
         try {
@@ -31,14 +33,17 @@ const News = ({ match }) => {
     };
 
     useEffect(() => {
-        fetchData(`http://localhost:8000/admin/showBoardNews/${boardId}`);
+        fetchData(`${URL}/admin/showBoardNews/${boardId}`);
     }, []);
 
     const refreshBoardNews = async () => {
         setIsError(false);
         setLoading(true);
         try {
-            const result = await axios(`/admin/refreshBoardNews/${boardId}`);
+            const result = await axios(
+                `${URL}/admin/refreshBoardNews/${boardId}`
+            );
+            console.log(result.data.errors);
             setData(result.data.original);
         } catch (error) {
             setIsError(true);
@@ -46,13 +51,16 @@ const News = ({ match }) => {
         setLoading(false);
     };
 
-    const readNews = id => {
-        axios.get(`/admin/readNews/${id}`).then(response => {
+    const readNews = (id, website_id) => {
+        axios.get(`/admin/readNews/${id}`).then((response) => {
             const { websites, ...restData } = data;
 
-            const updatedWebsites = websites.map(website => {
+            const updatedWebsites = websites.map((website) => {
+                if (website.id === website_id) {
+                    website.unread--;
+                }
                 const { news, ...restOfWebsites } = website;
-                const updatedNewses = news.map(neww => {
+                const updatedNewses = news.map((neww) => {
                     if (neww.id === response.data.news.id) {
                         return (neww.status = "read");
                     } else {
@@ -64,18 +72,19 @@ const News = ({ match }) => {
 
             const updatedData = {
                 ...restData,
-                websites: updatedWebsites
+                websites: updatedWebsites,
             };
 
             setData(updatedData);
         });
     };
 
-    const readAllNews = id => {
-        axios.get(`/admin/readAllNews/${id}`).then(response => {
+    const readAllNews = (id) => {
+        axios.get(`/admin/readAllNews/${id}`).then((response) => {
             const { websites, ...restData } = data;
-            const updatedWebsites = websites.map(website => {
+            const updatedWebsites = websites.map((website) => {
                 if (website.id === id) {
+                    website.unread = 0;
                     website.news = response.data;
                     return website;
                 } else {
@@ -84,33 +93,20 @@ const News = ({ match }) => {
             });
             const updatedData = {
                 ...restData,
-                websites: updatedWebsites
+                websites: updatedWebsites,
             };
 
             setData(updatedData);
         });
     };
 
-    const newsPreview = url => {
-        // axios
-        //     .post("/admin/newsPreview", {
-        //         url: url
-        //     })
-        //     .then(response => {
-        //         setPreview(response.data);
-        //     });
-        setPreview(url);
-        setShow(true);
-    };
-
     const showWebsitesNews = () => {
-        const websitesNews = data.websites.map(website => (
+        const websitesNews = data.websites.map((website) => (
             <WebsiteNews
                 key={website.id}
                 website={website}
                 filter={filter}
                 readNews={readNews}
-                newsPreview={newsPreview}
                 readAllNews={readAllNews}
             />
         ));
@@ -139,15 +135,15 @@ const News = ({ match }) => {
                     />
                 </Modal.Body>
             </Modal>
+            {isError && "aa"}
             <h2 className="mt-5">News</h2>
             <Button onClick={refreshBoardNews}>Refresh</Button>
-            <div className="filters mt-5">
+            <div className="filters mt-5 mb-5">
                 <Filter value="unread" active={filter} setFilter={setFilter} />
                 <Filter value="read" active={filter} setFilter={setFilter} />
                 <Filter value="all" active={filter} setFilter={setFilter} />
             </div>
 
-            {isError && "aa"}
             {loading && <LoaderData />}
 
             {data && <>{showWebsitesNews()}</>}

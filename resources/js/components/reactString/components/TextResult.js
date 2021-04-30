@@ -8,7 +8,7 @@ const TextResult = ({ text, setShowAlert }) => {
         onSuccess: () => {
             setShowAlert(true);
             setTimeout(() => setShowAlert(false), 1500);
-        }
+        },
     });
 
     return (
@@ -17,7 +17,7 @@ const TextResult = ({ text, setShowAlert }) => {
                 {changeText(text)}
             </div>
             <Button className="mt-3" onClick={copy} variant="success">
-                Kopiuj
+                Copy
             </Button>
         </>
     );

@@ -6,6 +6,7 @@ import "react-confirm-alert/src/react-confirm-alert.css";
 import { Button, Alert, Modal, Badge } from "react-bootstrap";
 import DataTable from "./DataTable";
 import { Link } from "react-router-dom";
+import { URL } from "../../constants/constants";
 import {
     BsFillTrashFill,
     BsFillEyeFill,
@@ -29,7 +30,7 @@ function Boards() {
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        fetchData("http://localhost:8000/admin/showUserBoards");
+        fetchData(`${URL}/admin/showUserBoards`);
     }, []);
 
     const fetchData = async (url) => {
@@ -170,7 +171,13 @@ function Boards() {
     const columns = [
         {
             Header: "Name",
+            id: "name",
             accessor: "name",
+            Cell: ({ row }) => (
+                <>
+                    {row.original.name} {`\(${row.original.websites_number}\)`}{" "}
+                </>
+            ),
         },
         {
             Header: "Refr.",
@@ -274,7 +281,7 @@ function Boards() {
             ),
         },
     ];
-
+    console.log(data);
     return (
         <>
             {alert.view && (

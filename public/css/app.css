@@ -10030,6 +10030,10 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
+.nav-item {
+  margin-bottom: 10px;
+}
+
 .btn {
   padding: 12px 24px;
   border-radius: 20px;
@@ -10068,6 +10072,34 @@ th {
 
 .nav-info {
   background: #3d09a2;
+}
+
+.nav-sidebar .navbar-nav {
+  flex-direction: column;
+}
+.nav-sidebar .btn {
+  font-size: 0.8em;
+  width: 100%;
+  padding: 6px;
+  border-radius: 0;
+  text-align: left;
+}
+.nav-sidebar .btn:hover {
+  background: #dae0e4;
+}
+@media (max-width: 991.98px) {
+  .nav-sidebar .navbar-nav {
+    flex-direction: row;
+  }
+  .nav-sidebar .nav-item {
+    margin-right: 10px;
+  }
+  .nav-sidebar .btn {
+    background: #dae0e4;
+  }
+  .nav-sidebar .btn:hover {
+    background: #fff;
+  }
 }
 
 #navbarDropdown {
@@ -10112,4 +10144,9 @@ th {
   border: 1px solid #ced4da;
   border-radius: 0.25rem;
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.card-header:hover {
+  background: #dae0e4;
+  cursor: pointer;
 }

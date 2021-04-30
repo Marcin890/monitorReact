@@ -27,7 +27,9 @@ body {
 }
 
 // Navigation
-
+.nav-item {
+    margin-bottom: 10px;
+}
 // Buttons
 .btn {
     padding: 12px 24px;
@@ -74,7 +76,32 @@ table {
 }
 
 .nav-sidebar {
-    @include media-breakpoint-down(sm) {
+    .navbar-nav {
+        flex-direction: column;
+    }
+    .btn {
+        font-size: 0.8em;
+        width: 100%;
+        padding: 6px;
+        border-radius: 0;
+        text-align: left;
+        &:hover {
+            background: $light;
+        }
+    }
+    @include media-breakpoint-down(md) {
+        .navbar-nav {
+            flex-direction: row;
+        }
+        .nav-item {
+            margin-right: 10px;
+        }
+        .btn {
+            background: $light;
+            &:hover {
+                background: $white;
+            }
+        }
     }
 }
 #navbarDropdown {
@@ -123,4 +150,10 @@ table {
     border: 1px solid #ced4da;
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+// Card
+.card-header:hover {
+    background: $light;
+    cursor: pointer;
 }

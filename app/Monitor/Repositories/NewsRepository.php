@@ -9,6 +9,7 @@ class NewsRepository
 {
     public function downloadNews($url, $element)
     {
+
         $news = HtmlDomParser::file_get_html($url)->find($element);
         $unique_news = array_unique($news);
         return $unique_news;
@@ -62,35 +63,73 @@ class NewsRepository
         $board->save();
 
         $websites = $board->websites()->get();
+
+
+        $answers = array();
         foreach ($websites as $website) {
-            $website_parts = parse_url($website->url);
-            $host =  $website_parts['host'];
-            $scheme =  $website_parts['scheme'];
 
-            $news = $this->downloadNews($website->url, $website->selector);
+            try {
+                $website_parts = parse_url($website->url);
+                $host =  $website_parts['host'];
+                $scheme =  $website_parts['scheme'];
 
-            $newsCount = count($news) * 2;
+                $news = $this->downloadNews($website->url, $website->selector);
 
-            $savedNews = News::where('website_id', $website->id)->orderBy('created_at', 'desc')->limit(50)->pluck('content')->toArray();
+                $newsCount = count($news) * 2;
+
+                $savedNews = News::where('website_id', $website->id)->orderBy('created_at', 'desc')->limit(50)->pluck('content')->toArray();
 
 
 
-            $news_url = array();
-            foreach ($news as $element) {
-                $url = $this->findUrl($element);
-                $checkedUrl = $this->checkUrl($url, $host, $scheme);
-                $news_url[] = array(
-                    "url" => $checkedUrl,
-                    "content" => strip_tags($element)
-                );
-            }
-            $differenceNews = array_reverse($this->compareTable($news_url, $savedNews));
+                $news_url = array();
+                foreach ($news as $element) {
+                    $url = $this->findUrl($element);
+                    $checkedUrl = $this->checkUrl($url, $host, $scheme);
+                    $news_url[] = array(
+                        "url" => $checkedUrl,
+                        "content" => strip_tags($element)
+                    );
+                }
+                $differenceNews = array_reverse($this->compareTable($news_url, $savedNews));
 
-            foreach ($differenceNews as $new) {
-                $this->saveNews($new, $website->id);
+                foreach ($differenceNews as $new) {
+                    $this->saveNews($new, $website->id);
+                }
+            } catch (\Exception $e) {
+                array_push($answers, $website->url);
             }
         }
+        return $answers;
     }
+
+    public function checkSaveWebsiteNews($id)
+    {
+
+        $website = Website::find($id);
+
+        $website_parts = parse_url($website->url);
+        $host =  $website_parts['host'];
+        $scheme =  $website_parts['scheme'];
+
+        $news = $this->downloadNews($website->url, $website->selector);
+
+
+        $news_url = array();
+        foreach ($news as $element) {
+            $url = $this->findUrl($element);
+            $checkedUrl = $this->checkUrl($url, $host, $scheme);
+            $news_url[] = array(
+                "url" => $checkedUrl,
+                "content" => strip_tags($element)
+            );
+        }
+        $differenceNews = array_reverse($news_url);
+
+        foreach ($differenceNews as $new) {
+            $this->saveNews($new, $website->id);
+        }
+    }
+
     public function compareTable($news_url, $savedNews)
     {
         $diff = array();

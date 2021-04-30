@@ -6,16 +6,10 @@ import Accordion from "react-bootstrap/Accordion";
 import Card from "react-bootstrap/Card";
 import { BsFillEyeFill, BsCheck, BsLink, BsArrowRight } from "react-icons/bs";
 
-const WebsiteNews = ({
-    website,
-    filter,
-    readNews,
-    newsPreview,
-    readAllNews
-}) => {
+const WebsiteNews = ({ website, filter, readNews, readAllNews }) => {
     const filterNews = () => {
         if (filter !== "all") {
-            return website.news.filter(news => news.status === filter);
+            return website.news.filter((news) => news.status === filter);
         } else {
             return website.news;
         }
@@ -29,7 +23,7 @@ const WebsiteNews = ({
                 <>
                     <span className="text-break">{row.original.content}</span>
                 </>
-            )
+            ),
         },
         {
             Header: "Uploded",
@@ -43,7 +37,7 @@ const WebsiteNews = ({
                         <strong>{row.original.updated_at}</strong>
                     </Moment>
                 </>
-            )
+            ),
         },
         {
             Header: "Read",
@@ -54,7 +48,9 @@ const WebsiteNews = ({
                     {row.original.status === "unread" ? (
                         <Button
                             id={row.original.id}
-                            onClick={e => readNews(row.original.id)}
+                            onClick={(e) =>
+                                readNews(row.original.id, website.id)
+                            }
                             variant="success"
                             type="button"
                             size="sm"
@@ -70,7 +66,7 @@ const WebsiteNews = ({
                         }`
                     )}
                 </>
-            )
+            ),
         },
         {
             Header: "See",
@@ -91,45 +87,63 @@ const WebsiteNews = ({
                         </Button>
                     </a>
                 </>
-            )
-        }
-        // {
-        //     Header: "Preview",
-        //     id: "preview",
-        //     accessor: "url",
-        //     Cell: ({ row }) => (
-        //         <>
-        //             <Button
-        //                 id={row.original.id}
-        //                 variant="primary"
-        //                 type="button"
-        //                 size="sm"
-        //                 onClick={() => newsPreview(row.original.url)}
-        //                 className="btn-circle"
-        //             >
-        //                 <BsFillEyeFill />
-        //             </Button>
-        //         </>
-        //     )
-        // }
+            ),
+        },
     ];
+
     return (
         <>
-            <Card className="mt-5">
-                <Card.Header>
-                    <h4>
-                        <a target="_blank" href={website.url}>
-                            {website.name}
-                        </a>
-                    </h4>
-                </Card.Header>
-                <Card.Body>
-                    <Button onClick={() => readAllNews(website.id)}>
-                        Read All
-                    </Button>
-                    <DataTable data={filterNews()} columns={newsColumn} />
-                </Card.Body>
-            </Card>
+            <Accordion key={website.id} defaultActiveKey={null}>
+                <Card className="mt-2">
+                    <Accordion.Toggle eventKey={website.id} as={Card.Header}>
+                        <div className="d-flex justify-content-between">
+                            <div>{website.name}</div>
+                            <div>
+                                {website.unread > 0 ? (
+                                    <Button
+                                        variant="outline-danger"
+                                        type="button"
+                                        size="sm"
+                                        className="btn-circle mr-2"
+                                    >
+                                        {website.unread}
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="outline-success"
+                                        type="button"
+                                        size="sm"
+                                        className="btn-circle mr-2"
+                                    >
+                                        {website.unread}
+                                    </Button>
+                                )}
+                                <a target="_blank" href={website.url}>
+                                    <Button
+                                        variant="info"
+                                        type="button"
+                                        size="sm"
+                                        className="btn-circle mr-2"
+                                    >
+                                        <BsLink />
+                                    </Button>
+                                </a>
+                            </div>
+                        </div>
+                    </Accordion.Toggle>
+                    <Accordion.Collapse eventKey={website.id}>
+                        <Card.Body>
+                            <Button onClick={() => readAllNews(website.id)}>
+                                Read All
+                            </Button>
+                            <DataTable
+                                data={filterNews()}
+                                columns={newsColumn}
+                            />
+                        </Card.Body>
+                    </Accordion.Collapse>
+                </Card>
+            </Accordion>
         </>
     );
 };

@@ -11,12 +11,13 @@ import LoaderData from "./LoaderData";
 
 import DataTable from "./DataTable";
 import Users from "./Users";
+import { URL } from "../../constants/constants";
 
 import {
     BsFillTrashFill,
     BsFillEyeFill,
     BsNewspaper,
-    BsPencilSquare
+    BsPencilSquare,
 } from "react-icons/bs";
 
 const Board = ({ match }) => {
@@ -37,10 +38,10 @@ const Board = ({ match }) => {
     const handleShow = () => setShow(true);
 
     useEffect(() => {
-        fetchData(`http://localhost:8000/admin/showBoard/${boardId}`);
+        fetchData(`${URL}/admin/showBoard/${boardId}`);
     }, []);
 
-    const fetchData = async url => {
+    const fetchData = async (url) => {
         setIsError(false);
         setIsLoading(true);
         try {
@@ -52,43 +53,43 @@ const Board = ({ match }) => {
         setIsLoading(false);
     };
 
-    const addWebsite = web => {
+    const addWebsite = (web) => {
         axios
             .post(`/admin/saveWebsite/${boardId}`, {
                 name: web.name,
                 url: web.url,
                 selector: web.selector,
-                boardId: boardId
+                boardId: boardId,
             })
-            .then(response => {
+            .then((response) => {
                 const website = response.data;
                 const { websites, ...restOfData } = data;
                 const updatedWebsites = [website, ...websites];
                 const updatedData = {
                     ...restOfData,
-                    websites: updatedWebsites
+                    websites: updatedWebsites,
                 };
 
                 setData(updatedData);
                 showAlert("Website has been added", "success");
             })
-            .catch(error => showError(error));
+            .catch((error) => showError(error));
 
         setShow(false);
     };
 
-    const editWebsite = web => {
+    const editWebsite = (web) => {
         axios
             .post(`/admin/updateWebsite`, {
                 name: web.name,
                 url: web.url,
                 selector: web.selector,
                 boardId: web,
-                websiteId: web.id
+                websiteId: web.id,
             })
-            .then(response => {
+            .then((response) => {
                 const { websites, ...restOfData } = data;
-                const updatedWebsites = websites.map(item => {
+                const updatedWebsites = websites.map((item) => {
                     if (item.id === response.data.id) {
                         return (item = response.data);
                     } else {
@@ -97,49 +98,49 @@ const Board = ({ match }) => {
                 });
                 const updatedData = {
                     ...restOfData,
-                    websites: updatedWebsites
+                    websites: updatedWebsites,
                 };
                 setData(updatedData);
                 showAlert("Website has been edited", "success");
             })
-            .catch(error => showError(error));
+            .catch((error) => showError(error));
 
         setShow(false);
     };
 
-    const testWebsite = data => {
+    const testWebsite = (data) => {
         setIsLoading(true);
         axios
             .post(`/admin/testWebsite`, {
                 url: data.url,
-                selector: data.selector
+                selector: data.selector,
             })
-            .then(response => {
+            .then((response) => {
                 setTestData(response.data);
                 setShowTestData(true);
             });
         setIsLoading(false);
     };
 
-    const deleteWebsite = id => {
+    const deleteWebsite = (id) => {
         axios
             .get(`/admin/deleteWebsite/${id}`)
-            .then(response => {
+            .then((response) => {
                 const { websites, ...restOfData } = data;
                 const updatedWebsites = websites.filter(
-                    website => website.id !== response.data.id
+                    (website) => website.id !== response.data.id
                 );
                 const updatedData = {
                     ...restOfData,
-                    websites: updatedWebsites
+                    websites: updatedWebsites,
                 };
                 setData(updatedData);
             })
-            .catch(error => showError(error));
+            .catch((error) => showError(error));
         showAlert("Website has been deleted", "danger");
     };
 
-    const deleteBoardConfirmation = id => {
+    const deleteBoardConfirmation = (id) => {
         confirmAlert({
             customUI: ({ onClose }) => {
                 return (
@@ -179,41 +180,41 @@ const Board = ({ match }) => {
                         </Modal.Body>
                     </Modal>
                 );
-            }
+            },
         });
     };
-    const addUserToBoard = id => {
+    const addUserToBoard = (id) => {
         axios
             .post(`/admin/addUserToBoard`, {
                 user_id: id,
-                board_id: boardId
+                board_id: boardId,
             })
-            .then(response => {
+            .then((response) => {
                 const { board_users, ...restOfData } = data;
                 const updatedUsers = [response.data, ...board_users];
                 const updatedData = {
                     ...restOfData,
-                    board_users: updatedUsers
+                    board_users: updatedUsers,
                 };
                 setData(updatedData);
             });
         showAlert("User has been added", "success");
     };
 
-    const removeUserFromBoard = id => {
+    const removeUserFromBoard = (id) => {
         axios
             .post(`/admin/removeUserFromBoard`, {
                 user_id: id,
-                board_id: boardId
+                board_id: boardId,
             })
-            .then(response => {
+            .then((response) => {
                 const { board_users, ...restOfData } = data;
                 const updatedUsers = board_users.filter(
-                    user => user.id !== response.data.id
+                    (user) => user.id !== response.data.id
                 );
                 const updatedData = {
                     ...restOfData,
-                    board_users: updatedUsers
+                    board_users: updatedUsers,
                 };
                 setData(updatedData);
             });
@@ -224,7 +225,7 @@ const Board = ({ match }) => {
         setAlert({
             view: true,
             text: `${text}`,
-            variant: variant
+            variant: variant,
         });
         setTimeout(() => {
             setAlert({});
@@ -236,7 +237,7 @@ const Board = ({ match }) => {
             Header: "Name",
             accessor: "name",
             id: "name",
-            Cell: ({ row }) => <>{row.original.name}</>
+            Cell: ({ row }) => <>{row.original.name}</>,
         },
         {
             Header: "URL",
@@ -248,11 +249,11 @@ const Board = ({ match }) => {
                         {row.original.url}
                     </a>
                 </>
-            )
+            ),
         },
         {
             Header: "Selector",
-            accessor: "selector"
+            accessor: "selector",
         },
         {
             Header: "Edit",
@@ -261,7 +262,7 @@ const Board = ({ match }) => {
                 <>
                     <Button
                         id={row.original.id}
-                        onClick={e => editWebsiteForm(row.original)}
+                        onClick={(e) => editWebsiteForm(row.original)}
                         variant="info"
                         type="button"
                         size="sm"
@@ -270,7 +271,7 @@ const Board = ({ match }) => {
                         <BsPencilSquare />
                     </Button>
                 </>
-            )
+            ),
         },
         {
             Header: "Delete",
@@ -279,7 +280,9 @@ const Board = ({ match }) => {
                 <>
                     <Button
                         id={row.original.id}
-                        onClick={e => deleteBoardConfirmation(row.original.id)}
+                        onClick={(e) =>
+                            deleteBoardConfirmation(row.original.id)
+                        }
                         variant="danger"
                         type="button"
                         size="sm"
@@ -288,18 +291,18 @@ const Board = ({ match }) => {
                         <BsFillTrashFill />
                     </Button>
                 </>
-            )
-        }
+            ),
+        },
     ];
 
     const websiteUsers = [
         {
             Header: "Name",
-            accessor: "name"
+            accessor: "name",
         },
         {
             Header: "Email",
-            accessor: "email"
+            accessor: "email",
         },
         {
             Header: "Delete",
@@ -308,7 +311,7 @@ const Board = ({ match }) => {
                 <>
                     <Button
                         id={row.original.id}
-                        onClick={e => removeUserFromBoard(row.original.id)}
+                        onClick={(e) => removeUserFromBoard(row.original.id)}
                         variant="danger"
                         type="button"
                         size="sm"
@@ -317,11 +320,11 @@ const Board = ({ match }) => {
                         <BsFillTrashFill />
                     </Button>
                 </>
-            )
-        }
+            ),
+        },
     ];
 
-    const editWebsiteForm = website => {
+    const editWebsiteForm = (website) => {
         setFormData(website);
         setShow(true);
     };
@@ -331,7 +334,7 @@ const Board = ({ match }) => {
         setShow(true);
     };
 
-    const showError = error => {
+    const showError = (error) => {
         if (error.response) {
             showAlert("Error of response", "danger");
         } else if (error.request) {

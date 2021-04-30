@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 const AddWebsiteForm = ({ addWebsite, editWebsite, testWebsite, web }) => {
     const { register, handleSubmit, watch, errors } = useForm();
 
-    const onSubmit = data => {
+    const onSubmit = (data) => {
         if (!web) {
             addWebsite(data);
         } else {

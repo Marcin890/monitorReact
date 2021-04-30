@@ -30,6 +30,7 @@ class NewsController extends Controller
         $boards2 = $request->user()->boards()->get();
         foreach ($boards2 as $board2) {
             $board2->unreaded_news = $this->bR->countUnreadedBordNews($board2);
+            $board2->websites_number = Board::find($board2->id)->websites()->count();
         }
 
         return response()->json($boards2);
@@ -38,9 +39,13 @@ class NewsController extends Controller
 
     public function refreshBoardNews($id)
     {
-        $this->nR->checkSaveBoardNews($id);
+
+        $errors = $this->nR->checkSaveBoardNews($id);
 
         $news = $this->showBoardNews($id);
+
+
+        $news->errors = $errors;
 
         return response()->json($news);
     }
@@ -163,5 +168,16 @@ class NewsController extends Controller
         }
 
         return $news_array;
+    }
+
+    public function searchNews(Request $request)
+    {
+        $user = $request->user();
+
+        $search = $request->search;
+        $news = $user->boards()->with(['websites.news' => function ($query) use ($search) {
+            $query->where('content', 'like', "%$search%");
+        }])->get();
+        return response()->json($news);
     }
 }

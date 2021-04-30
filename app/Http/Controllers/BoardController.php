@@ -46,6 +46,7 @@ class BoardController extends Controller
 
         foreach ($boards as $board) {
             $board->unreaded_news = $this->bR->countUnreadedBordNews($board);
+            $board->websites_number = Board::find($board->id)->websites()->count();
         }
 
         return response()->json($boards);

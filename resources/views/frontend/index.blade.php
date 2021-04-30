@@ -3,7 +3,7 @@
 <div class="container">
 
     <div class="min-vh-100 d-flex justify-content-center align-items-center">.
-        <h1 class="white">News Managment System</h1>
+        <h1 class="white">MonitorNews</h1>
     </div>
 </div>
 

@@ -1,34 +1,46 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Nav, Navbar } from "react-bootstrap";
+import { Nav, Navbar, Button } from "react-bootstrap";
+import { BsChevronRight } from "react-icons/bs";
 
 const list = [
     { name: "start", path: "/", exact: true },
-    { name: "contact", path: "/contact" }
+    { name: "contact", path: "/contact" },
 ];
 
 const Navigation = () => {
     return (
         <>
             <Navbar
-                collapseOnSelect
                 expand="lg"
                 bg=""
                 variant="light"
                 sticky="top"
                 className="nav-sidebar"
             >
-                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                <Navbar.Collapse id="responsive-navbar-nav">
-                    <Nav className="flex-column mt-5 ">
-                        <Nav.Item>
-                            <Link to={`/admin`}>Boards</Link>
-                        </Nav.Item>
-                        <Nav.Item>
-                            <Link to={`/typography`}>Typography</Link>
-                        </Nav.Item>
-                    </Nav>
-                </Navbar.Collapse>
+                <Nav className="mt-5 ">
+                    <Nav.Item>
+                        <Link to={`/admin`}>
+                            <Button variant="white" size="sm">
+                                Boards <BsChevronRight />
+                            </Button>
+                        </Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Link to={`/search`}>
+                            <Button variant="white" size="sm">
+                                Search <BsChevronRight />
+                            </Button>
+                        </Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Link to={`/typography`}>
+                            <Button variant="white" size="sm">
+                                Typography <BsChevronRight />
+                            </Button>
+                        </Link>
+                    </Nav.Item>
+                </Nav>
             </Navbar>
         </>
     );
