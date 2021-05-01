@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 const AddBoardForm = ({ addBoard, editBoard, boardToEdit }) => {
     const { register, handleSubmit, watch, errors } = useForm();
 
-    const onSubmit = data => {
+    const onSubmit = (data) => {
         if (!boardToEdit) {
             addBoard(data.name);
         } else {
@@ -22,12 +22,19 @@ const AddBoardForm = ({ addBoard, editBoard, boardToEdit }) => {
                 <Form.Group>
                     <Form.Label>Name *</Form.Label>
                     <Form.Control
-                        name="name"
                         type="text"
-                        ref={register({ minLength: 3 })}
                         defaultValue={boardToEdit && boardToEdit.name}
+                        name="name"
+                        ref={register({
+                            required: true,
+                            minLength: 3,
+                        })}
                     />
-                    {errors.name && <span>At least 3 characters</span>}
+                    {errors.name && (
+                        <span className="text-danger">
+                            At least 3 characters
+                        </span>
+                    )}
                     <Form.Control
                         name="id"
                         type="hidden"

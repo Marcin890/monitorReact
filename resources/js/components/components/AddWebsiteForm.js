@@ -24,22 +24,34 @@ const AddWebsiteForm = ({ addWebsite, editWebsite, testWebsite, web }) => {
                     <Form.Control
                         name="name"
                         type="text"
-                        ref={register}
+                        ref={register({
+                            required: true,
+                            minLength: 3,
+                        })}
                         defaultValue={web && web.name}
-                        // ref={register({ minLength: 3 })}
                     />
-                    {errors.name && <span>At least 3 characters</span>}
+                    {errors.name && (
+                        <span className="text-danger">
+                            At least 3 characters
+                        </span>
+                    )}
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>URL *</Form.Label>
                     <Form.Control
                         name="url"
                         type="url"
-                        ref={register}
+                        ref={register({
+                            required: true,
+                            pattern: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/,
+                        })}
                         defaultValue={web && web.url}
-                        // ref={register({ minLength: 3 })}
                     />
-                    {errors.url && <span>At least 3 characters</span>}
+                    {errors.url && (
+                        <span className="text-danger">
+                            URL with http or https
+                        </span>
+                    )}
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Selector *</Form.Label>
@@ -47,7 +59,9 @@ const AddWebsiteForm = ({ addWebsite, editWebsite, testWebsite, web }) => {
                         as="select"
                         name="selector"
                         type="text"
-                        ref={register}
+                        ref={register({
+                            required: true,
+                        })}
                         defaultValue={web && web.selector}
                     >
                         <option value="h1">h1</option>
@@ -59,7 +73,11 @@ const AddWebsiteForm = ({ addWebsite, editWebsite, testWebsite, web }) => {
                         <option value="p">p</option>
                     </Form.Control>
 
-                    {errors.selector && <span>At least 3 characters</span>}
+                    {errors.selector && (
+                        <span className="text-danger">
+                            At least 3 characters
+                        </span>
+                    )}
                 </Form.Group>
                 <Form.Group>
                     <Form.Control
@@ -67,7 +85,6 @@ const AddWebsiteForm = ({ addWebsite, editWebsite, testWebsite, web }) => {
                         type="hidden"
                         ref={register}
                         defaultValue={web && web.id}
-                        // ref={register({ minLength: 3 })}
                     />
                 </Form.Group>
                 <div className="d-flex justify-content-between">

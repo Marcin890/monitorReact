@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import DataTable from "./DataTable";
 import { Button } from "react-bootstrap";
-import { URL } from "../../constants/constants";
+import { config } from "../../constants/constants";
 
 const Users = ({ boardId, addUserToBoard }) => {
-    const url = `${URL}/admin/showUsersOffBoard/${boardId}`;
+    const url2 = config.url.API_URL;
+    const url = `${url2}/admin/showUsersOffBoard/${boardId}`;
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
     const [data, setData] = useState();

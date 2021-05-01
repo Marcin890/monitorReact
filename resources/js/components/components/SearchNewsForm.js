@@ -17,8 +17,15 @@ const SearchNewsForm = ({ searchNews }) => {
             <Form>
                 <Form.Group>
                     {/* <Form.Label>Search News</Form.Label> */}
-                    <Form.Control name="search" type="text" ref={register} />
-                    {errors.name && <span>At least 3 characters</span>}
+                    <Form.Control
+                        name="search"
+                        type="text"
+                        ref={register({
+                            required: true,
+                            minLength: 3,
+                        })}
+                    />
+                    {errors.search && <span>At least 3 characters</span>}
                 </Form.Group>
                 <Button
                     type="submit"

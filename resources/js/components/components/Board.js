@@ -11,7 +11,7 @@ import LoaderData from "./LoaderData";
 
 import DataTable from "./DataTable";
 import Users from "./Users";
-import { URL } from "../../constants/constants";
+import { config } from "../../constants/constants";
 
 import {
     BsFillTrashFill,
@@ -37,8 +37,10 @@ const Board = ({ match }) => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const url = config.url.API_URL;
+
     useEffect(() => {
-        fetchData(`${URL}/admin/showBoard/${boardId}`);
+        fetchData(`${url}/admin/showBoard/${boardId}`);
     }, []);
 
     const fetchData = async (url) => {

@@ -6,10 +6,11 @@ import { Button, Modal } from "react-bootstrap";
 import Filter from "./Filter";
 import LoaderData from "./LoaderData";
 import Iframe from "react-iframe";
-import { URL } from "../../constants/constants";
+import { config } from "../../constants/constants";
 import DataTable from "./DataTable";
 import Moment from "react-moment";
 import { BsFillEyeFill, BsCheck, BsLink, BsArrowRight } from "react-icons/bs";
+const url = config.url.API_URL;
 
 const SearchNews = () => {
     const [data, setData] = useState();
@@ -22,9 +23,8 @@ const SearchNews = () => {
     const handleShow = () => setShow(true);
 
     const searchNews = (search) => {
-        console.log(search);
         axios
-            .post(`/admin/searchNews`, {
+            .post(`${url}/admin/searchNews`, {
                 search: search,
             })
             .then((response) => {
@@ -118,7 +118,6 @@ const SearchNews = () => {
         },
     ];
 
-    console.log(data);
     return (
         <>
             <h2 className="mt-5">Search</h2>

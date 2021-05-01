@@ -5,12 +5,13 @@ import { Button, Modal } from "react-bootstrap";
 import Filter from "./Filter";
 import LoaderData from "./LoaderData";
 import Iframe from "react-iframe";
-import { URL } from "../../constants/constants";
-
+import { config } from "../../constants/constants";
 const News = ({ match }) => {
     const boardId = match.params.id;
 
-    const url = `${URL}/admin/showBoardNews/${boardId}`;
+    const url2 = config.url.API_URL;
+
+    const url = `${url2}/admin/showBoardNews/${boardId}`;
     const [data, setData] = useState();
     let [loading, setLoading] = useState(true);
     const [isError, setIsError] = useState(false);
@@ -33,7 +34,7 @@ const News = ({ match }) => {
     };
 
     useEffect(() => {
-        fetchData(`${URL}/admin/showBoardNews/${boardId}`);
+        fetchData(`${url2}/admin/showBoardNews/${boardId}`);
     }, []);
 
     const refreshBoardNews = async () => {
@@ -41,7 +42,7 @@ const News = ({ match }) => {
         setLoading(true);
         try {
             const result = await axios(
-                `${URL}/admin/refreshBoardNews/${boardId}`
+                `${url2}/admin/refreshBoardNews/${boardId}`
             );
             console.log(result.data.errors);
             setData(result.data.original);
