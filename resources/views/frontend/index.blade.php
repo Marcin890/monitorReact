@@ -1,10 +1,8 @@
 @extends('layouts.frontend')
 @section('content')
-<div class="container">
+<div>
+    <h1><img class="logo-image" src="{{asset('assets/img/logo-color.svg')}}"><span
+            class="logo-bold text-white">Monitor</span><span class="logo-light text-danger">News</span></h1>
 
-    <div class="min-vh-100 d-flex justify-content-center align-items-center">.
-        <h1 class="white">MonitorNews</h1>
-    </div>
 </div>
-
 @endsection

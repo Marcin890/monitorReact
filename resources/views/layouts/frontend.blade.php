@@ -22,11 +22,12 @@
 </head>
 
 <body>
-    <div id="app" class="">
+    <div id="app" class="app-main">
         <nav class="navbar navbar-expand-md navbar-dark  bg-info shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="" {{ route('boardIndex') }}">
-                    MonitorNews
+                    <img class="logo-image" src="{{asset('assets/img/logo.svg')}}"><span
+                        class="logo-bold">Monitor</span><span class="logo-light">News</span>
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -81,7 +82,7 @@
             </div>
         </nav>
 
-        <main class="py-4 min-vh-100 main-background">
+        <main class="py-4 main-background app-grow d-flex justify-content-center align-items-center">
             @yield('content')
         </main>
 

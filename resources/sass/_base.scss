@@ -1,7 +1,12 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,700;1,300;1,700&display=swap");
 
-.app {
-    min-height: 90vh;
+.app-main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.app-grow {
+    flex-grow: 1;
 }
 .loader-container {
     position: fixed;
@@ -122,7 +127,7 @@ table {
 }
 
 .main-background {
-    background-image: url("../../public/assets/img/konstantin-kleine-V1NVvXmO_dk-unsplash.jpg");
+    background-image: url("../../public/assets/img/lighthouse.png");
     background-size: cover;
 }
 .white {
@@ -156,4 +161,18 @@ table {
 .card-header:hover {
     background: $light;
     cursor: pointer;
+}
+
+// Logo
+.logo-image {
+    width: 50px;
+    padding-right: 10px;
+}
+
+.logo-bold {
+    font-weight: bold;
+}
+.logo-light {
+    font-weight: 100;
+    color: $light;
 }

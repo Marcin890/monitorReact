@@ -36,10 +36,11 @@
 </head>
 
 <body>
-
-    @include('backend.partials.navigation.main')
-    <div id="root"></div>
-    @include('partials.footer')
+    <div class="app-main">
+        @include('backend.partials.navigation.main')
+        <div id="root" class="app-grow"></div>
+        @include('partials.footer')
+    </div>
 
 </body>
 

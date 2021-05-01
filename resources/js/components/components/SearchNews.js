@@ -40,12 +40,15 @@ const SearchNews = () => {
         const newsArray = [];
         const news = data.map((board) => {
             return board.websites.map((website) => {
+                website.board_name = board.name;
                 return website.news.map((neww, index) => {
+                    neww.website_name = website.name;
+                    neww.board_name = website.board_name;
                     return newsArray.push(neww);
                 });
             });
         });
-
+        console.log(newsArray);
         return newsArray;
     };
 
@@ -66,6 +69,28 @@ const SearchNews = () => {
             Cell: ({ row }) => (
                 <>
                     <span className="text-break">{row.original.content}</span>
+                </>
+            ),
+        },
+        {
+            Header: "Website",
+            accessor: "website_name",
+            Cell: ({ row }) => (
+                <>
+                    <span className="text-break">
+                        {row.original.website_name}
+                    </span>
+                </>
+            ),
+        },
+        {
+            Header: "Board",
+            accessor: "board_name",
+            Cell: ({ row }) => (
+                <>
+                    <span className="text-break">
+                        {row.original.board_name}
+                    </span>
                 </>
             ),
         },
