@@ -9,7 +9,6 @@ const SearchNewsForm = ({ searchNews }) => {
 
     const onSubmit = (data) => {
         searchNews(data.search);
-        // console.log(data.search);
     };
 
     return (

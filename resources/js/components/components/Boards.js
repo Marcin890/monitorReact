@@ -14,6 +14,7 @@ import {
     BsPencilSquare,
     BsPlus,
     BsWrench,
+    BsArrowRepeat,
 } from "react-icons/bs";
 import Moment from "react-moment";
 import LoaderData from "./LoaderData";
@@ -29,7 +30,6 @@ function Boards() {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const url = config.url.API_URL;
-    console.log("aa");
     useEffect(() => {
         fetchData(`${url}/admin/showUserBoards`);
     }, []);
@@ -159,6 +159,10 @@ function Boards() {
         fetchData(`/admin/refreshAllBoardNews`);
     };
 
+    const refreshBoardNewsMain = async (boardId) => {
+        fetchData(`${url}/admin/refreshBoardNewsMain/${boardId}`);
+    };
+
     const editBoardForm = (board) => {
         setFormData(board);
         setShow(true);
@@ -186,11 +190,15 @@ function Boards() {
             accessor: "updated_at",
             Cell: ({ row }) => (
                 <>
-                    <Moment format="HH:mm">{row.original.updated_at}</Moment>
+                    <Moment
+                        format="HH:mm"
+                        date={row.original.updated_at}
+                    ></Moment>
                     <br />
-                    <Moment format="DD.MM">
-                        <strong>{row.original.updated_at}</strong>
-                    </Moment>
+                    <Moment
+                        format="DD.MM"
+                        date={row.original.updated_at}
+                    ></Moment>
                 </>
             ),
         },
@@ -281,8 +289,25 @@ function Boards() {
                 </>
             ),
         },
+        {
+            Header: "Refr.",
+            id: "refres",
+            Cell: ({ row }) => (
+                <>
+                    <Button
+                        id={row.original.id}
+                        onClick={(e) => refreshBoardNewsMain(row.original.id)}
+                        variant="success"
+                        type="button"
+                        size="sm"
+                        className="btn-circle"
+                    >
+                        <BsArrowRepeat />
+                    </Button>
+                </>
+            ),
+        },
     ];
-    console.log(data);
     return (
         <>
             {alert.view && (
@@ -320,7 +345,7 @@ function Boards() {
                 <Button variant="success" onClick={addBoardForm}>
                     <BsPlus /> Add Board
                 </Button>
-                <Button onClick={refreshAllBoardNews}>Refresh </Button>
+                {/* <Button onClick={refreshAllBoardNews}>Refresh </Button> */}
             </div>
             {isLoading && <LoaderData />}
 

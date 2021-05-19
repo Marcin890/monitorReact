@@ -13,11 +13,11 @@ function App() {
                 <div className="app">
                     <div className="container">
                         <div className="row">
-                            <div className="col-lg-2">
+                            <div className="col-lg-3">
                                 <Navigation />
                             </div>
 
-                            <div className="col-lg-10 ">
+                            <div className="col-lg-9 ">
                                 <Page />
                             </div>
                         </div>

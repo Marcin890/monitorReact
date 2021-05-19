@@ -56,7 +56,6 @@ const AddWebsiteForm = ({ addWebsite, editWebsite, testWebsite, web }) => {
                 <Form.Group>
                     <Form.Label>Selector *</Form.Label>
                     <Form.Control
-                        as="select"
                         name="selector"
                         type="text"
                         ref={register({
@@ -64,13 +63,13 @@ const AddWebsiteForm = ({ addWebsite, editWebsite, testWebsite, web }) => {
                         })}
                         defaultValue={web && web.selector}
                     >
-                        <option value="h1">h1</option>
+                        {/* <option value="h1">h1</option>
                         <option value="h2">h2</option>
                         <option value="h3">h3</option>
                         <option value="h4">h4</option>
                         <option value="h5">h5</option>
                         <option value="div">div</option>
-                        <option value="p">p</option>
+                        <option value="p">p</option> */}
                     </Form.Control>
 
                     {errors.selector && (

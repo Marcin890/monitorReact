@@ -57,6 +57,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     Route::get('/refreshAllBoardNews', 'NewsController@refreshAllBoardNews')->name('refreshAllBoardNews');
 
+    Route::get('/refreshBoardNewsMain' . '/{id}', 'NewsController@refreshBoardNewsMain')->name('refreshBoardNewsMain');
+
     Route::get('/showBoardNews' . '/{id}', 'NewsController@showBoardNews')->name('showBoardNews');
 
 

@@ -44,7 +44,6 @@ const News = ({ match }) => {
             const result = await axios(
                 `${url2}/admin/refreshBoardNews/${boardId}`
             );
-            console.log(result.data.errors);
             setData(result.data.original);
         } catch (error) {
             setIsError(true);
@@ -114,7 +113,6 @@ const News = ({ match }) => {
 
         return websitesNews;
     };
-    console.log(data);
     return (
         <>
             <Modal

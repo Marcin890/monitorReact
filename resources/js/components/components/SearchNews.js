@@ -48,7 +48,6 @@ const SearchNews = () => {
                 });
             });
         });
-        console.log(newsArray);
         return newsArray;
     };
 
@@ -100,11 +99,15 @@ const SearchNews = () => {
             accessor: "updated_at",
             Cell: ({ row }) => (
                 <>
-                    <Moment format="HH:mm">{row.original.updated_at}</Moment>
+                    <Moment
+                        format="HH:mm"
+                        date={row.original.updated_at}
+                    ></Moment>
                     <br />
-                    <Moment format="DD.MM">
-                        <strong>{row.original.updated_at}</strong>
-                    </Moment>
+                    <Moment
+                        format="DD.MM"
+                        date={row.original.updated_at}
+                    ></Moment>
                 </>
             ),
         },
@@ -142,7 +145,7 @@ const SearchNews = () => {
             ),
         },
     ];
-
+    console.log(data);
     return (
         <>
             <h2 className="mt-5">Search</h2>

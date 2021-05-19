@@ -31,11 +31,15 @@ const WebsiteNews = ({ website, filter, readNews, readAllNews }) => {
             accessor: "updated_at",
             Cell: ({ row }) => (
                 <>
-                    <Moment format="HH:mm">{row.original.updated_at}</Moment>
+                    <Moment
+                        format="HH:mm"
+                        date={row.original.updated_at}
+                    ></Moment>
                     <br />
-                    <Moment format="DD.MM">
-                        <strong>{row.original.updated_at}</strong>
-                    </Moment>
+                    <Moment
+                        format="DD.MM"
+                        date={row.original.updated_at}
+                    ></Moment>
                 </>
             ),
         },
@@ -93,7 +97,10 @@ const WebsiteNews = ({ website, filter, readNews, readAllNews }) => {
 
     return (
         <>
-            <Accordion key={website.id} defaultActiveKey={null}>
+            <Accordion
+                key={website.id}
+                defaultActiveKey={website.unread > 0 ? website.id : null}
+            >
                 <Card className="mt-2">
                     <Accordion.Toggle eventKey={website.id} as={Card.Header}>
                         <div className="d-flex justify-content-between">

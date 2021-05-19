@@ -37,6 +37,21 @@ class NewsController extends Controller
     }
 
 
+
+    public function refreshBoardNewsMain($id, Request $request)
+    {
+
+        $this->nR->checkSaveBoardNews($id);
+
+        $boards2 = $request->user()->boards()->get();
+        foreach ($boards2 as $board2) {
+            $board2->unreaded_news = $this->bR->countUnreadedBordNews($board2);
+            $board2->websites_number = Board::find($board2->id)->websites()->count();
+        }
+
+        return response()->json($boards2);
+    }
+
     public function refreshBoardNews($id)
     {
 
