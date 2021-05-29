@@ -113,6 +113,7 @@ const News = ({ match }) => {
 
         return websitesNews;
     };
+    console.log(data);
     return (
         <>
             <Modal

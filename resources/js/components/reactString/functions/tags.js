@@ -7,9 +7,16 @@ export function tags(text) {
 
     // Akapit
     // replacedText = replacedText.split("\n").map((str) => <p>{str}</p>);
+
+    replacedText = replacedText.replace(/\n+/g, "\n");
+
     replacedText = reactStringReplace(replacedText, /(\n)/g, (match, i) => (
         <>
             <br key={uuid()} />
+            <br key={uuid()} />
+            <span key={uuid()} className="changed">
+                &lt;p&gt;
+            </span>
         </>
     ));
     return replacedText;

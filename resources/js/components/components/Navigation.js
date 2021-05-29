@@ -6,6 +6,7 @@ import {
     BsType,
     BsSearch,
     BsReverseLayoutTextSidebarReverse,
+    BsBell,
 } from "react-icons/bs";
 
 const list = [
@@ -27,16 +28,25 @@ const Navigation = () => {
                     <Nav.Item>
                         <Link to={`/admin`}>
                             <Button variant="white" size="sm">
-                                <BsReverseLayoutTextSidebarReverse />
-                                &nbsp; Boards <BsChevronRight />
+                                <BsBell />
+                                &nbsp; News
                             </Button>
                         </Link>
                     </Nav.Item>
                     <Nav.Item>
+                        <Link to={`/boards`}>
+                            <Button variant="white" size="sm">
+                                <BsReverseLayoutTextSidebarReverse />
+                                &nbsp; Boards
+                            </Button>
+                        </Link>
+                    </Nav.Item>
+
+                    <Nav.Item>
                         <Link to={`/search`}>
                             <Button variant="white" size="sm">
                                 <BsSearch />
-                                &nbsp; Search <BsChevronRight />
+                                &nbsp; Search
                             </Button>
                         </Link>
                     </Nav.Item>
@@ -44,7 +54,7 @@ const Navigation = () => {
                         <Link to={`/typography`}>
                             <Button variant="white" size="sm">
                                 <BsType />
-                                &nbsp; Typography <BsChevronRight />
+                                &nbsp; Typo
                             </Button>
                         </Link>
                     </Nav.Item>

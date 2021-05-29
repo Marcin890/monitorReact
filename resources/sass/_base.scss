@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,700;1,300;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
 
 .app-main {
     min-height: 100vh;
@@ -7,6 +7,10 @@
 }
 .app-grow {
     flex-grow: 1;
+}
+.app-container {
+    padding-left: 20px;
+    padding-right: 20px;
 }
 .loader-container {
     position: fixed;
@@ -25,10 +29,17 @@
     width: 100%;
     height: 90vh;
 }
-
+// Link
+a {
+    color: black;
+    &:hover {
+        text-decoration: none;
+        color: $danger;
+    }
+}
 // Fonts
 body {
-    font-family: "Montserrat", sans-serif;
+    font-family: "Noto Sans", sans-serif;
 }
 
 // Navigation
@@ -58,9 +69,11 @@ th {
 }
 
 table {
-    font-size: 14px;
+    font-size: 12px;
 }
-
+table td {
+    padding: 0.55rem !important;
+}
 @include media-breakpoint-down(sm) {
     td,
     th {
@@ -85,7 +98,7 @@ table {
         flex-direction: column;
     }
     .btn {
-        font-size: 0.9em;
+        font-size: 0.75em;
         width: 100%;
         padding: 6px;
         border-radius: 0;
@@ -142,23 +155,6 @@ table {
     background: lightgreen;
 }
 
-.result {
-    display: block;
-    width: 100%;
-    height: 375px;
-    overflow-y: scroll;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
 // Card
 .card-header:hover {
     background: $light;
@@ -167,7 +163,7 @@ table {
 
 // Logo
 .logo-image {
-    width: 50px;
+    width: 35px;
     padding-right: 10px;
 }
 
@@ -177,4 +173,38 @@ table {
 .logo-light {
     font-weight: 100;
     color: $light;
+}
+.navbar-brand {
+    font-size: 1.1rem;
+}
+
+// Break
+.text-br {
+    overflow-wrap: none;
+    word-break: none;
+    @include media-breakpoint-down(md) {
+        overflow-wrap: break-word;
+        word-break: break-word;
+    }
+}
+
+// Better typography
+.typo-form {
+    font-size: 0.75rem;
+    min-height: 100px;
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-weight: 400;
+
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: 20px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+    &:focus-visible {
+        outline: none;
+    }
 }

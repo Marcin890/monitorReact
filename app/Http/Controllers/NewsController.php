@@ -195,4 +195,15 @@ class NewsController extends Controller
         }])->get();
         return response()->json($news);
     }
+
+    public function getUnreadedNews(Request $request)
+    {
+        $user = $request->user();
+
+
+        $news = $user->boards()->with(['websites.news' => function ($query) {
+            $query->where('status', 'unread');
+        }])->get();
+        return response()->json($news);
+    }
 }

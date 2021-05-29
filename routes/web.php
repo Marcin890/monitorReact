@@ -74,6 +74,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     Route::post('/searchNews', 'NewsController@searchNews')->name('searchNews');
 
+    Route::get('/getUnreadedNews', 'NewsController@getUnreadedNews')->name('getUnreadedNews');
+
 
 
 

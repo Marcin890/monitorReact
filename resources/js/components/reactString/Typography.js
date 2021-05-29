@@ -28,7 +28,7 @@ const Typography = () => {
                 </Alert>
             )}
             <Row>
-                <h2 className="mt-5">Better Typography</h2>
+                <h2 className="mt-5">Typography</h2>
             </Row>
 
             <Row className="mt-5">
