@@ -13,12 +13,12 @@ const TextResult = ({ text, setShowAlert }) => {
 
     return (
         <>
-            <div className="result" ref={ref}>
-                {changeText(text)}
-            </div>
-            <Button className="mt-3" onClick={copy} variant="success">
+            <Button onClick={copy} variant="success">
                 Copy
             </Button>
+            <div className="typo-form mt-3" ref={ref}>
+                {changeText(text)}
+            </div>
         </>
     );
 };
