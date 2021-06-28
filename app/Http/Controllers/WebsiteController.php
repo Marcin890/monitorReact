@@ -36,6 +36,7 @@ class WebsiteController extends Controller
             'name' => "required|string",
             'url' => "required|url",
             'selector' => "required|string",
+            'priority' => "required",
         ]);
 
         $savedWebsite = Website::create([
@@ -43,10 +44,11 @@ class WebsiteController extends Controller
             'url' => $request->url,
             'selector' => $request->selector,
             'board_id' => $request->boardId,
+            'priority' => $request->priority,
             'created_at' => new \DateTime(),
         ]);
 
-        // $this->nR->checkSaveWebsiteNews($savedWebsite->id);
+        $this->nR->checkSaveWebsiteNews($savedWebsite->id);
 
 
         return response()->json($savedWebsite);
@@ -95,11 +97,13 @@ class WebsiteController extends Controller
      */
     public function update(Request $request)
     {
+
         $website = Website::find($request->websiteId);
         $this->authorize('checkOwner', $website);
         $website->name = $request->name;
         $website->url = $request->url;
         $website->selector = $request->selector;
+        $website->priority = $request->priority;
         $website->save();
 
 

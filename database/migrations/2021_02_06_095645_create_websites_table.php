@@ -18,6 +18,7 @@ class CreateWebsitesTable extends Migration
             $table->string('name');
             $table->string('url');
             $table->string('selector');
+            $table->bigInteger('priority');
             $table->bigInteger('board_id')->unsigned();
             $table->foreign('board_id')->references('id')->on('boards')->onDelete('cascade');;
             $table->timestamps();

@@ -61,6 +61,7 @@ const Board = ({ match }) => {
                 name: web.name,
                 url: web.url,
                 selector: web.selector,
+                priority: web.priority,
                 boardId: boardId,
             })
             .then((response) => {
@@ -81,11 +82,13 @@ const Board = ({ match }) => {
     };
 
     const editWebsite = (web) => {
+        console.log(web);
         axios
             .post(`/admin/updateWebsite`, {
                 name: web.name,
                 url: web.url,
                 selector: web.selector,
+                priority: web.priority,
                 boardId: web,
                 websiteId: web.id,
             })
@@ -345,6 +348,7 @@ const Board = ({ match }) => {
             showAlert("Something go wrong", "danger");
         }
     };
+    console.log(data);
     return (
         <>
             {isLoading && <LoaderData />}

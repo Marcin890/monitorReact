@@ -1,17 +1,26 @@
 $danger: #ff007c;
 $success: #01b5d6;
 $info: #3d09a2;
-$warning: #00ccf2;
+// $warning: #00ccf2;
 $primary: #2d62ed;
 $light: #dae0e4;
+$green: #28a745;
 
 $theme-colors: (
     "danger": $danger,
     "success": $success,
     "info": $info,
-    "warning": $warning,
-    "primary": $primary
+    // "warning": $warning,
+    "primary": $primary,
+    "green": $green,
 );
+
+.priority-2 {
+    background-color: $green;
+}
+.priority-3 {
+    background-color: orange;
+}
 
 /* import bootstrap to set changes */
 @import "~bootstrap/scss/bootstrap";

@@ -4,7 +4,7 @@ import {
     useSortBy,
     useFilters,
     useGlobalFilter,
-    useAsyncDebounce
+    useAsyncDebounce,
 } from "react-table";
 import matchSorter from "match-sorter";
 import Button from "react-bootstrap/Button";
@@ -14,7 +14,7 @@ import {
     BsFillEyeFill,
     BsNewspaper,
     BsFillCaretUpFill,
-    BsFillCaretDownFill
+    BsFillCaretDownFill,
 } from "react-icons/bs";
 import dateTime from "../../functions/dateTime";
 import GlobalFilter from "./GlobalFilter";
@@ -28,16 +28,24 @@ const BoardTable = ({ data, columns }) => {
         prepareRow,
         preGlobalFilteredRows,
         setGlobalFilter,
-        state
+        state,
     } = useTable(
         {
             columns,
-            data
+            data,
         },
 
         useGlobalFilter,
         useSortBy
     );
+
+    const getPriorityColor = (priority) => {
+        if (priority === 2) {
+            return "bg-green";
+        } else if (priority === 3) {
+            return "bg-warning";
+        }
+    };
 
     return (
         <>
@@ -48,9 +56,9 @@ const BoardTable = ({ data, columns }) => {
             />
             <BTable responsive="sm" hover className="mt-2" {...getTableProps()}>
                 <thead>
-                    {headerGroups.map(headerGroup => (
+                    {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
-                            {headerGroup.headers.map(column => (
+                            {headerGroup.headers.map((column) => (
                                 <th
                                     {...column.getHeaderProps(
                                         column.getSortByToggleProps()
@@ -80,9 +88,15 @@ const BoardTable = ({ data, columns }) => {
 
                         return (
                             <tr {...row.getRowProps()}>
-                                {row.cells.map(cell => {
+                                {row.cells.map((cell) => {
                                     return (
-                                        <td {...cell.getCellProps()}>
+                                        <td
+                                            {...cell.getCellProps()}
+                                            className={
+                                                row.original.priority &&
+                                                `priority-${row.original.priority}`
+                                            }
+                                        >
                                             {cell.render("Cell")}
                                         </td>
                                     );

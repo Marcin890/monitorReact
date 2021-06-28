@@ -51,33 +51,41 @@ const UnreadedNews = () => {
         const newsArray = [];
         let userb = [];
         let websiteLength = 0;
+        let refreshed = "2000-01-01T18:25:32.000000Z";
 
         const news = data.map((board) => {
             userb = [...userb, board.id];
+            refreshed = board.updated_at > refreshed && board.updated_at;
 
             return board.websites.map((website) => {
                 website.board_name = board.name;
                 website.board_id = board.id;
+
                 websiteLength++;
                 return website.news.map((neww, index) => {
                     neww.website_name = website.name;
                     neww.board_name = website.board_name;
+                    neww.priority = website.priority;
                     neww.board_id = website.board_id;
                     return newsArray.push(neww);
                 });
             });
         });
-        const newsArraySort = newsArray.sort(
+        const newsArraySortDate = newsArray.sort(
             (a, b) => (a.created_at > b.created_at && -1) || 1
+        );
+        const newsArraySortPriority = newsArraySortDate.sort(
+            (a, b) => (a.priority > b.priority && -1) || 1
         );
         setStatistic({
             boards: data.length,
             websites: websiteLength,
+            refreshed: refreshed,
         });
 
         setUserBoard(userb);
 
-        return newsArraySort;
+        return newsArraySortPriority;
     };
 
     const readNews = (id) => {
@@ -225,10 +233,21 @@ const UnreadedNews = () => {
                 </div>
             </div>
             {statistic && (
-                <p>
-                    <small>Boards: {statistic.boards}</small>&nbsp;&nbsp;
-                    <small>Websites: {statistic.websites}</small>
-                </p>
+                <div className="d-flex justify-content-between mt-2">
+                    <p>
+                        <small>Boards: {statistic.boards}</small>&nbsp;&nbsp;
+                        <small>Websites: {statistic.websites}</small>
+                    </p>
+                    <p>
+                        <small>
+                            Last:&nbsp;
+                            <Moment
+                                format="DD.MM HH:mm "
+                                date={statistic.refreshed}
+                            ></Moment>
+                        </small>
+                    </p>
+                </div>
             )}
             <div className="mt-3">{progressPercent && progressInstance}</div>
             {isLoading && <LoaderData />}
