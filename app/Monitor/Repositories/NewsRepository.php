@@ -56,6 +56,15 @@ class NewsRepository
         }
     }
 
+    public function readAllUserNews($newses, $user_id)
+    {
+
+
+        foreach ($newses as $news) {
+            $this->readNews($news->id, $user_id);
+        }
+    }
+
     public function checkSaveBoardNews($id)
     {
         $board = Board::find($id);

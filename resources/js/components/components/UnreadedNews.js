@@ -32,6 +32,9 @@ const UnreadedNews = () => {
 
     useEffect(() => {
         fetchData(`${url}/admin/getUnreadedNews`);
+        Echo.private("news-read").listen("NewsRead", (e) => {
+            console.log("llllll");
+        });
     }, []);
 
     const fetchData = (url) => {
@@ -94,6 +97,11 @@ const UnreadedNews = () => {
                 (news) => news.id != response.data.news.id
             );
             setData(uptatedData);
+        });
+    };
+    const readAllUserNews = (id) => {
+        axios.get(`/admin/readAllUserNews`).then((response) => {
+            setData(response.data.news);
         });
     };
 
@@ -232,6 +240,7 @@ const UnreadedNews = () => {
                     <Button onClick={refreshAllBoardNews}>Refresh </Button>
                 </div>
             </div>
+
             {statistic && (
                 <div className="d-flex justify-content-between mt-2">
                     <p>
@@ -249,6 +258,11 @@ const UnreadedNews = () => {
                     </p>
                 </div>
             )}
+            <div className="">
+                <Button onClick={readAllUserNews} variant="success">
+                    Read All
+                </Button>
+            </div>
             <div className="mt-3">{progressPercent && progressInstance}</div>
             {isLoading && <LoaderData />}
             {data && (

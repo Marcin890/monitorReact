@@ -8,6 +8,7 @@ use App\{Board, Website, News, User};
 use \Illuminate\Foundation\Validation\ValidatesRequests;
 use App\Monitor\Repositories\NewsRepository;
 use App\Monitor\Repositories\BoardRepository;
+use App\Events\NewsRead;
 
 class NewsController extends Controller
 {
@@ -107,13 +108,23 @@ class NewsController extends Controller
 
     public function readNews($id, Request $request)
     {
+
         $user = $request->user();
         $user_id = $request->user()->id;
 
         $newsToCheck = News::find($id);
         $this->authorize('checkOwner', $newsToCheck);
 
+        $nw = News::find($id);
+        // dd($id);
+
+
+        broadcast(new NewsRead($user, $nw))->toOthers();
+
+
         $news = $this->nR->readNews($id, $user_id);
+
+
 
         return response()->json([
             'news' => $news,
@@ -133,6 +144,34 @@ class NewsController extends Controller
 
 
         return $news;
+    }
+    public function readAllUserNews(Request $request)
+    {
+
+        $user = $request->user();
+        $user_id = $request->user()->id;
+        $news =  $user->boards()->with(['websites.news' => function ($query) {
+            $query->where('status', 'unread');
+        }])->get();
+
+        $news2 = [];
+
+        foreach ($news as $board) {
+            foreach ($board->websites as $website) {
+                foreach ($website->news as $new) {
+                    $news2[] = $new;
+                }
+            }
+        }
+
+
+
+        $this->nR->readAllUserNews($news2, $user_id);
+
+        return response()->json([
+            'news' => [],
+            'user' => $user
+        ]);
     }
 
     public function articleNews($id, Request $request)
