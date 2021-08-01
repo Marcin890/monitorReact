@@ -7,7 +7,7 @@ import TextareaAutosize from "react-autosize-textarea";
 const TextForm = ({ updateText }) => {
     const { register, handleSubmit, setValue, setError } = useForm();
     const onSubmit = (data) => {
-        console.log(data.id);
+        // console.log(data.id);
         updateText(data.textToChange);
     };
 

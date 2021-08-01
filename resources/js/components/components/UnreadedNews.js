@@ -24,6 +24,7 @@ const UnreadedNews = () => {
     const [filter, setFilter] = useState("unread");
     const [preview, setPreview] = useState("");
     const [show, setShow] = useState(false);
+    const [isInit, setIsInit] = useState(false);
     const [progressPercent, setProgressPercent] = useState();
     const [progressBoard, setProgressBoard] = useState();
     const handleClose = () => setShow(false);
@@ -31,23 +32,30 @@ const UnreadedNews = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
+        console.log("fetch");
         fetchData(`${url}/admin/getUnreadedNews`);
-        Echo.private("news-read").listen("NewsRead", (e) => {
-            console.log("llllll");
-        });
     }, []);
+
+    useEffect(() => {
+        if (!isInit) {
+            return;
+        }
+
+        Echo.private("news-read").listen("NewsRead", (e) => {
+            updateNews(e.news.id);
+        });
+    }, [isInit]);
 
     const fetchData = (url) => {
         axios
             .get(url)
             .then((response) => {
                 const data = prepareNewsData(response.data);
-                console.log(response.data);
                 setData(data);
+                setShow(false);
+                setIsInit(true);
             })
             .catch((error) => console.log(error));
-
-        setShow(false);
     };
 
     const prepareNewsData = (data) => {
@@ -91,12 +99,22 @@ const UnreadedNews = () => {
         return newsArraySortPriority;
     };
 
+    const updateNews = (id) => {
+        console.log(id);
+        const uptatedData = data.filter((neww) => {
+            if (neww.id == id) {
+                return (neww.status = "read");
+            } else {
+                return neww;
+            }
+        });
+        setData(uptatedData);
+        console.log(uptatedData);
+    };
+
     const readNews = (id) => {
         axios.get(`/admin/readNews/${id}`).then((response) => {
-            const uptatedData = data.filter(
-                (news) => news.id != response.data.news.id
-            );
-            setData(uptatedData);
+            updateNews(response.data.news.id);
         });
     };
     const readAllUserNews = (id) => {
@@ -111,17 +129,17 @@ const UnreadedNews = () => {
         let round = 0;
         const length = userBoard.length;
         for (const board of userBoard) {
-            console.log(`get ${board}`);
+            // console.log(`get ${board}`);
             await fetch(`${url}/admin/refreshBoardNews/${board}`)
                 .catch((error) => console.log("There was a problem!", error))
                 .then(() => {
-                    console.log(`download ${board}`);
+                    // console.log(`download ${board}`);
                     round = round + 1;
                     setProgressPercent(Math.trunc((100 * round) / length));
                 });
         }
 
-        console.log(`FetchAll`);
+        // console.log(`FetchAll`);
         fetchData(`${url}/admin/getUnreadedNews`);
         setProgressPercent(null);
         setIsLoading(false);
@@ -221,8 +239,8 @@ const UnreadedNews = () => {
             ),
         },
     ];
-    console.log(`UserBoard: ${userBoard}`);
-    console.log(data);
+    // console.log(`UserBoard: ${userBoard}`);
+    // console.log(data);
 
     const now = 50;
     const progressInstance = (
@@ -232,6 +250,8 @@ const UnreadedNews = () => {
             label={`${progressPercent}%`}
         />
     );
+
+    console.log(data);
     return (
         <>
             <div className="d-flex justify-content-between align-items-center mt-5">
@@ -267,7 +287,10 @@ const UnreadedNews = () => {
             {isLoading && <LoaderData />}
             {data && (
                 <>
-                    <DataTable data={data} columns={columns} />
+                    <DataTable
+                        data={data.filter((d) => d.status === "unread")}
+                        columns={columns}
+                    />
                 </>
             )}
         </>

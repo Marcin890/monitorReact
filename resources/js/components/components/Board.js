@@ -82,7 +82,6 @@ const Board = ({ match }) => {
     };
 
     const editWebsite = (web) => {
-        console.log(web);
         axios
             .post(`/admin/updateWebsite`, {
                 name: web.name,
@@ -348,7 +347,7 @@ const Board = ({ match }) => {
             showAlert("Something go wrong", "danger");
         }
     };
-    console.log(data);
+
     return (
         <>
             {isLoading && <LoaderData />}

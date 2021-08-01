@@ -6,6 +6,7 @@ import News from "./News";
 import SearchNews from "./SearchNews";
 import Users from "./Users";
 import Typography from "../reactString/Typography";
+import Slider from "../slider/Slider";
 import { Route, Switch } from "react-router-dom";
 import UnreadedNews from "./UnreadedNews";
 const Page = () => {
@@ -17,6 +18,7 @@ const Page = () => {
                 <Route path="/search" component={SearchNews} />
                 <Route path="/boards" component={Boards} />
                 <Route path="/typography" component={Typography} />
+                <Route path="/slider" component={Slider} />
                 <Route path="/admin/board/:id" component={Board} />
                 <Route path="/admin/showBoardNews/:id" component={News} />
             </Switch>

@@ -208,3 +208,32 @@ table td {
         outline: none;
     }
 }
+
+.sli {
+    height: 289px;
+    padding: 10px;
+    width: 231px;
+    background: #214143;
+    color: white;
+    font-weight: 400 !important;
+}
+
+.sli-title {
+    font-size: 26px !important;
+
+    margin: 0px !important;
+    padding: 0px !important;
+    padding-top: 6px !important;
+    padding-bottom: 13px !important;
+    font-family: Verdana, Arial, sans-serif;
+    letter-spacing: -1px;
+    line-height: 31px;
+}
+
+.sli-text {
+    display: block;
+    font-size: 12px !important;
+    line-height: 17.1429px !important;
+    font-family: Arial, Helvetica;
+}
+//

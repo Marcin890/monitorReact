@@ -7,6 +7,7 @@ import {
     BsSearch,
     BsReverseLayoutTextSidebarReverse,
     BsBell,
+    BsSquareHalf,
 } from "react-icons/bs";
 
 const list = [
@@ -55,6 +56,12 @@ const Navigation = () => {
                             <Button variant="white" size="sm">
                                 <BsType />
                                 &nbsp; Typo
+                            </Button>
+                        </Link>
+                        <Link to={`/slider`}>
+                            <Button variant="white" size="sm">
+                                <BsSquareHalf />
+                                &nbsp; Slider
                             </Button>
                         </Link>
                     </Nav.Item>

@@ -145,7 +145,7 @@ const SearchNews = () => {
             ),
         },
     ];
-    console.log(data);
+
     return (
         <>
             <h2 className="mt-5">Search</h2>
