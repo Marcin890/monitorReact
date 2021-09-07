@@ -3,6 +3,7 @@ import Boards from "./Boards";
 import Contact from "./Contact";
 import Board from "./Board";
 import News from "./News";
+import Interpellation from "./Interpellation";
 import SearchNews from "./SearchNews";
 import Users from "./Users";
 import Typography from "../reactString/Typography";
@@ -21,6 +22,7 @@ const Page = () => {
                 <Route path="/slider" component={Slider} />
                 <Route path="/admin/board/:id" component={Board} />
                 <Route path="/admin/showBoardNews/:id" component={News} />
+                <Route path="/interpellation" component={Interpellation} />
             </Switch>
         </>
     );

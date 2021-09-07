@@ -8,6 +8,7 @@ import {
     BsReverseLayoutTextSidebarReverse,
     BsBell,
     BsSquareHalf,
+    BsQuestionCircle,
 } from "react-icons/bs";
 
 const list = [
@@ -31,6 +32,14 @@ const Navigation = () => {
                             <Button variant="white" size="sm">
                                 <BsBell />
                                 &nbsp; News
+                            </Button>
+                        </Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Link to={`/interpellation`}>
+                            <Button variant="white" size="sm">
+                                <BsQuestionCircle />
+                                &nbsp; Interp.
                             </Button>
                         </Link>
                     </Nav.Item>

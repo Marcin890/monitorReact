@@ -51,6 +51,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
     Route::post('/testWebsite', 'NewsController@testWebsite')->name('testWebsite');
 
 
+    // Interpellation
+
+
+    Route::post('/refreshInterpellations', 'InterpellationController@refreshInterpellations')->name('refreshInterpellations');
 
     // News
     Route::get('/refreshBoardNews' . '/{id}', 'NewsController@refreshBoardNews')->name('refreshBoardNews');

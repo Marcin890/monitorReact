@@ -165,7 +165,6 @@ class NewsController extends Controller
         }
 
 
-
         $this->nR->readAllUserNews($news2, $user_id);
 
         return response()->json([
