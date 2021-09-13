@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use KubAT\PhpSimple\HtmlDomParser;
 use App\Monitor\Repositories\InterpellationRepository;
+use App\{Interpellation};
 
 class InterpellationController extends Controller
 {
@@ -21,7 +22,6 @@ class InterpellationController extends Controller
      */
     public function index()
     {
-        //
     }
 
     /**
@@ -31,7 +31,6 @@ class InterpellationController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -90,6 +89,17 @@ class InterpellationController extends Controller
         //
     }
 
+    public function checkIsNew($int_number, $old_interp)
+    {
+        $is_new = true;
+        foreach ($old_interp as $old) {
+            if ($old->number === $int_number) {
+                $is_new = false;
+            }
+        }
+        return $is_new;
+    }
+
     public function refreshInterpellations(Request $request)
     {
 
@@ -103,23 +113,62 @@ class InterpellationController extends Controller
 
         $interpellations = $this->iR->downloadInterpellations($website_url, $element, $recipient);
 
-        // dd($interpellations);
-        $news_url = array();
+        $old_interp = Interpellation::all();
+
+        $ints = array();
+
 
         foreach ($interpellations as $interp) {
 
-            $content = $interp[0]->plaintext;
-            $url = "https://www.sejm.gov.pl" . $interp[0]->href;
+            $int_number = $interp[0]->parent()->parent()->first_child()->plaintext;
+            $is_new = $this->checkIsNew($int_number, $old_interp);
+            if ($is_new) {
+                $int_content = $interp[0]->plaintext;
+                $int_url = "https://www.sejm.gov.pl" . $interp[0]->href;
+                $int_recipient = $recipient;
+                $int_type = $type;
+                $int_date = $this->iR->findDate($interp);
+                $int_status = "unread";
 
-            $news_url[] = array(
-                "content" => $content,
-                "url" => $url,
-                "recipient" => $recipient,
-                "type" => $type,
-                "date" => $this->iR->findDate($interp)
-            );
+
+                $saved_interp = $this->iR->saveInterpellation($int_content, $int_number, $int_url, $int_recipient, $int_type, $int_date, $int_status);
+
+
+
+                $ints[] = $saved_interp;
+
+                // return response()->json($ints);
+            }
         }
 
-        return response()->json($news_url);
+        return response()->json($ints);
+    }
+
+    public function getUnreadedInterpellations()
+    {
+        $interp = Interpellation::all();
+        return response()->json($interp);
+    }
+
+    public function readInterpellation($id, Request $request)
+    {
+
+        $user = $request->user();
+        $user_id = $request->user()->id;
+
+        // $newsToCheck = Interpellation::find($id);
+        // $this->authorize('checkOwner', $newsToCheck);
+
+        $int = Interpellation::find($id);
+        // dd($id);
+
+
+        // broadcast(new NewsRead($user, $nw))->toOthers();
+
+
+        $interp = $this->iR->readInterpellation($id, $user_id);
+
+
+        return response()->json($interp);
     }
 }
