@@ -23,6 +23,7 @@ const UnreadedNews = () => {
     const [statistic, setStatistic] = useState({});
     const [filter, setFilter] = useState("unread");
     const [preview, setPreview] = useState("");
+
     const [show, setShow] = useState(false);
     const [isInit, setIsInit] = useState(false);
     const [progressPercent, setProgressPercent] = useState();
@@ -32,7 +33,7 @@ const UnreadedNews = () => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        console.log("fetch");
+        // console.log("fetch");
         fetchData(`${url}/admin/getUnreadedNews`);
     }, []);
 
@@ -100,7 +101,7 @@ const UnreadedNews = () => {
     };
 
     const updateNews = (id) => {
-        console.log(id);
+        // console.log(id);
         const uptatedData = data.filter((neww) => {
             if (neww.id == id) {
                 return (neww.status = "read");
@@ -109,7 +110,7 @@ const UnreadedNews = () => {
             }
         });
         setData(uptatedData);
-        console.log(uptatedData);
+        // console.log(uptatedData);
     };
 
     const readNews = (id) => {
@@ -117,6 +118,7 @@ const UnreadedNews = () => {
             updateNews(response.data.news.id);
         });
     };
+
     const readAllUserNews = (id) => {
         axios.get(`/admin/readAllUserNews`).then((response) => {
             setData(response.data.news);
@@ -251,7 +253,7 @@ const UnreadedNews = () => {
         />
     );
 
-    console.log(data);
+    // console.log(data);
     return (
         <>
             <div className="d-flex justify-content-between align-items-center mt-5">
