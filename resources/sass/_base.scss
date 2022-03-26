@@ -212,7 +212,7 @@ table td {
 .sli {
     height: 289px;
     padding: 10px;
-    width: 231px;
+    width: 230px;
     background: #214143;
     color: white;
     font-weight: 400 !important;
@@ -236,4 +236,40 @@ table td {
     line-height: 17.1429px !important;
     font-family: Arial, Helvetica;
 }
+
+.sli-news {
+    color: #1c7f84;
+    font-family: Verdana, Arial, sans-serif;
+    width: 300px;
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 400;
+}
+
+.sli-list {
+    list-style-type: square;
+}
 //
+
+.interp-1 {
+    border-left: 3px $danger solid;
+    padding-left: 0.5em;
+}
+.interp-2 {
+    border-left: 3px $success solid;
+    padding-left: 0.5em;
+}
+.interp-3 {
+    border-left: 3px $info solid;
+    padding-left: 0.5em;
+}
+
+.status-unread {
+}
+
+.status-read {
+    color: rgb(160, 160, 160);
+    a {
+        color: rgb(160, 160, 160);
+    }
+}

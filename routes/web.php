@@ -53,6 +53,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function () {
 
     // Interpellation
 
+    Route::get('/getUnreadedInterpellations', 'InterpellationController@getUnreadedInterpellations')->name('getUnreadedInterpellations');
+
+    Route::get('/readInterpellation' . '/{id}', 'InterpellationController@readInterpellation')->name('readInterpellation');
 
     Route::post('/refreshInterpellations', 'InterpellationController@refreshInterpellations')->name('refreshInterpellations');
 

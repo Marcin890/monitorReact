@@ -2,7 +2,7 @@ import reactStringReplace from "react-string-replace";
 // import { uuid } from "uuidv4";
 import { v4 as uuid } from "uuid";
 
-export function tags(text) {
+export function tags(text, id) {
     let replacedText = text;
 
     // Akapit
@@ -19,5 +19,18 @@ export function tags(text) {
             </span>
         </>
     ));
+    if (replacedText[4] !== undefined && id === "pap") {
+        replacedText[4] = "<b>" + replacedText[4] + "</b>";
+    }
+    if (replacedText[1] !== undefined && id === "pap") {
+        replacedText[1] = (
+            <>
+                <br />
+                <br />
+            </>
+        );
+    }
+
+    console.log(replacedText[4]);
     return replacedText;
 }

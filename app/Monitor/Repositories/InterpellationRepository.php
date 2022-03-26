@@ -4,6 +4,7 @@ namespace App\Monitor\Repositories;
 
 use KubAT\PhpSimple\HtmlDomParser;
 use App\{News, Board, Website};
+use App\{Interpellation};
 
 class InterpellationRepository
 {
@@ -65,6 +66,33 @@ class InterpellationRepository
 
         $answerDate = $answer[0]->next_sibling()->last_child()->last_child()->last_child()->plaintext;
 
-        return $answerDate;
+        $datte = implode("-", array_reverse(explode("-", $answerDate)));
+
+        return $datte;
+    }
+
+    public function saveInterpellation($int_content, $int_number, $int_url, $int_recipient, $int_type, $int_date, $int_status)
+    {
+        $interp = Interpellation::create([
+            'content' => $int_content,
+            'number' => $int_number,
+            'url' => $int_url,
+            'recipient' => $int_recipient,
+            'type' => $int_type,
+            'date' => $int_date,
+            'status' => $int_status,
+
+        ]);
+        return $interp;
+    }
+
+    public function readInterpellation($id, $user_id)
+    {
+        $interp = Interpellation::find($id);
+        $interp->status = 'read';
+        // $news->user_id = $user_id;
+        // $news->updated_at = new \DateTime();
+        $interp->save();
+        return $interp;
     }
 }

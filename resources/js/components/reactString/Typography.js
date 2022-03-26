@@ -10,10 +10,13 @@ import { v4 as uuid } from "uuid";
 
 const Typography = () => {
     const [text, setText] = useState("");
+    const [id, setId] = useState("");
     const [showAlert, setShowAlert] = useState(false);
 
-    const updateText = (text) => {
+    const updateText = (text, id) => {
+        console.log(text);
         setText(text);
+        setId(id);
     };
 
     return (
@@ -37,7 +40,11 @@ const Typography = () => {
                 </Col>
 
                 <Col md>
-                    <TextResult text={text} setShowAlert={setShowAlert} />
+                    <TextResult
+                        text={text}
+                        id={id}
+                        setShowAlert={setShowAlert}
+                    />
                 </Col>
             </Row>
         </Container>

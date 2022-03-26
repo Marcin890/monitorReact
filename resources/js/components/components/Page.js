@@ -4,6 +4,7 @@ import Contact from "./Contact";
 import Board from "./Board";
 import News from "./News";
 import Interpellation from "./Interpellation";
+import Tiny from "./Tiny";
 import SearchNews from "./SearchNews";
 import Users from "./Users";
 import Typography from "../reactString/Typography";
@@ -19,6 +20,7 @@ const Page = () => {
                 <Route path="/search" component={SearchNews} />
                 <Route path="/boards" component={Boards} />
                 <Route path="/typography" component={Typography} />
+                <Route path="/tiny" component={Tiny} />
                 <Route path="/slider" component={Slider} />
                 <Route path="/admin/board/:id" component={Board} />
                 <Route path="/admin/showBoardNews/:id" component={News} />

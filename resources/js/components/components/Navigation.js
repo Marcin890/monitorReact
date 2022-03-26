@@ -9,6 +9,7 @@ import {
     BsBell,
     BsSquareHalf,
     BsQuestionCircle,
+    BsPencilSquare,
 } from "react-icons/bs";
 
 const list = [
@@ -51,7 +52,6 @@ const Navigation = () => {
                             </Button>
                         </Link>
                     </Nav.Item>
-
                     <Nav.Item>
                         <Link to={`/search`}>
                             <Button variant="white" size="sm">
@@ -67,6 +67,16 @@ const Navigation = () => {
                                 &nbsp; Typo
                             </Button>
                         </Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Link to={`/tiny`}>
+                            <Button variant="white" size="sm">
+                                <BsPencilSquare />
+                                &nbsp; Tiny
+                            </Button>
+                        </Link>
+                    </Nav.Item>
+                    <Nav.Item>
                         <Link to={`/slider`}>
                             <Button variant="white" size="sm">
                                 <BsSquareHalf />

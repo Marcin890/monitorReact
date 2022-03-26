@@ -3,7 +3,7 @@ import { changeText } from "../functions/changeText";
 import { useClipboard } from "use-clipboard-hook";
 import { Button } from "react-bootstrap";
 
-const TextResult = ({ text, setShowAlert }) => {
+const TextResult = ({ text, setShowAlert, id }) => {
     const { ref, copy, cut } = useClipboard({
         onSuccess: () => {
             setShowAlert(true);
@@ -17,7 +17,7 @@ const TextResult = ({ text, setShowAlert }) => {
                 Copy
             </Button>
             <div className="typo-form mt-3" ref={ref}>
-                {changeText(text)}
+                {changeText(text, id)}
             </div>
         </>
     );

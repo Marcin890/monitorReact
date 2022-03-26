@@ -2,13 +2,14 @@ import { Form, Button } from "react-bootstrap";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 // import TextareaAutosize from "react-textarea-autosize";
+// aaa
 import TextareaAutosize from "react-autosize-textarea";
 
 const TextForm = ({ updateText }) => {
     const { register, handleSubmit, setValue, setError } = useForm();
-    const onSubmit = (data) => {
-        // console.log(data.id);
-        updateText(data.textToChange);
+    const onSubmit = (data, id) => {
+        // console.log("aa", data);
+        updateText(data.textToChange, id);
     };
 
     const clearForm = () => {
@@ -21,11 +22,24 @@ const TextForm = ({ updateText }) => {
     }, []);
 
     return (
-        <Form onSubmit={handleSubmit(onSubmit)}>
+        <Form>
             <div className="d-flex justify-content-between align-items-center">
-                <Button type="submit" id="correct">
+                <Button
+                    type="submit"
+                    id="correct"
+                    onClick={handleSubmit((data) => onSubmit(data, "correct"))}
+                >
                     Correct
                 </Button>
+                <Button
+                    type="submit"
+                    id="pap"
+                    onClick={handleSubmit((data) => onSubmit(data, "pap"))}
+                    variant="info"
+                >
+                    PAP
+                </Button>
+
                 <Button type="reset" onClick={clearForm} variant="danger">
                     Clear
                 </Button>
