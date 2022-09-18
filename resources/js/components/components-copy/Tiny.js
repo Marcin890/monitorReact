@@ -23,7 +23,7 @@ const Tiny = () => {
         setData(data2);
     };
 
-    console.log(data);
+    // console.log(data);
     return (
         <>
             <Container>
@@ -77,7 +77,7 @@ const Tiny = () => {
                                 "undo redo | bold italic underline superscript subscript |   formatselect |  numlist bullist | removeformat charmap | fullscreen |  template link anchor ",
                             toolbar_sticky: true,
                             content_style:
-                                "body { font-family:Helvetica,Arial,sans-serif; font-size:16px }",
+                                "body { font-family:Georgia,Helvetica,Arial,sans-serif; font-size:17px }",
                             templates: [
                                 {
                                     title: "PAP",
@@ -105,7 +105,7 @@ const Tiny = () => {
                                 );
                                 const insertPAP = function () {
                                     editor.insertContent(
-                                        `<img src='https://adst.mp.pl/img/scripts/common/PAP_logo.jpg'>`
+                                        `<p><img src='https://adst.mp.pl/img/scripts/common/PAP_logo.jpg'></p>`
                                     );
                                 };
 

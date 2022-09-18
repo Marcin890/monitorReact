@@ -48,6 +48,7 @@
         "react-string-replace": "^0.4.4",
         "react-table": "^7.6.3",
         "react-textarea-autosize": "^8.3.2",
+        "styled-components": "^5.3.5",
         "use-clipboard-hook": "^1.1.1",
         "uuid": "^8.3.2",
         "uuidv4": "^6.2.7",

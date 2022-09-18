@@ -1,361 +1,163 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import AddBoardForm from "./AddBoardForm";
-import { confirmAlert } from "react-confirm-alert";
-import "react-confirm-alert/src/react-confirm-alert.css";
-import { Button, Alert, Modal, Badge } from "react-bootstrap";
-import DataTable from "./DataTable";
-import { Link } from "react-router-dom";
-import { config } from "../../constants/constants";
-import {
-    BsFillTrashFill,
-    BsFillEyeFill,
-    BsNewspaper,
-    BsPencilSquare,
-    BsPlus,
-    BsWrench,
-    BsArrowRepeat,
-} from "react-icons/bs";
-import Moment from "react-moment";
-import LoaderData from "./LoaderData";
-
-function Boards() {
-    const [data, setData] = useState();
-    const [isLoading, setIsLoading] = useState(false);
-    const [isError, setIsError] = useState(false);
-    const [alert, setAlert] = useState({});
-    const [show, setShow] = useState(false);
-    const [formData, setFormData] = useState(null);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-    const url = config.url.API_URL;
-    useEffect(() => {
-        fetchData(`${url}/admin/showUserBoards`);
-    }, []);
-
-    const fetchData = async (url) => {
-        setIsError(false);
-        setIsLoading(true);
-        try {
-            const result = await axios(url);
-            setData(result.data);
-        } catch (error) {
-            setIsError(true);
-        }
-        setIsLoading(false);
-    };
-
-    const addBoard = (name) => {
-        axios
-            .post("/admin/createBoard", {
-                name: name,
-            })
-            .then((response) => {
-                setData([response.data, ...data]);
-                showAlert("Board has been added", "success");
-            })
-            .catch((error) => showError(error));
-        setShow(false);
-    };
-
-    const editBoard = (board) => {
-        axios
-            .post(`/admin/updateBoard`, {
-                name: board.name,
-                boardId: board.id,
-            })
-            .then((response) => {
-                const updateBoards = data.map((item) => {
-                    if (item.id === response.data.id) {
-                        item.name = response.data.name;
-                        return item;
-                    } else {
-                        return item;
-                    }
-                });
-                setData(updateBoards);
-                showAlert("Board has been edited", "success");
-            })
-            .catch((error) => showError(error));
-        setShow(false);
-    };
-
-    const deleteBoard = (id) => {
-        axios
-            .get(`/admin/destroyBoard/${id}`)
-            .then((response) =>
-                setData(data.filter((data) => data.id !== response.data.id))
-            );
-        showAlert("Board has been deleted", "danger");
-    };
-
-    const showError = (error) => {
-        if (error.response) {
-            showAlert("Error of response", "danger");
-        } else if (error.request) {
-            showAlert("Error of request", "danger");
-        } else {
-            showAlert("Something go wrong", "danger");
-        }
-    };
-
-    const deleteBoardConfirmation = (id) => {
-        confirmAlert({
-            customUI: ({ onClose }) => {
-                return (
-                    <Modal
-                        show={true}
-                        onHide={handleClose}
-                        animation={true}
-                        size="lg"
-                        aria-labelledby="contained-modal-title-vcenter"
-                        centered
-                    >
-                        <Modal.Header>
-                            <h1>Are you sure?</h1>
-                        </Modal.Header>
-                        <Modal.Body>
-                            <div className="d-flex justify-content-between">
-                                <Button
-                                    onClick={onClose}
-                                    variant="info"
-                                    type="button"
-                                    size="sm"
-                                >
-                                    No
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        deleteBoard(id);
-                                        onClose();
-                                    }}
-                                    variant="danger"
-                                    type="button"
-                                    size="sm"
-                                >
-                                    Yes, Delete it!
-                                </Button>
-                            </div>
-                        </Modal.Body>
-                    </Modal>
-                );
+import { React, useState } from "react";
+import { Wrapper, Header, IconPlus, Info, InfoItem, List } from "./Boards.css";
+import Board from "./Board";
+import Modal from "./Modal";
+const Boards = () => {
+    const data = [
+        {
+            id: 25,
+            name: "Urzędy Marszałk.",
+            created_at: "2021-05-21T18:25:32.000000Z",
+            updated_at: "2022-07-10T08:53:03.000000Z",
+            unreaded_news: 15,
+            websites_number: 1,
+            pivot: {
+                user_id: 1,
+                board_id: 25,
             },
-        });
-    };
-
-    const showAlert = (text, variant) => {
-        setAlert({
-            view: true,
-            text: `${text}`,
-            variant: variant,
-        });
-        setTimeout(() => {
-            setAlert({});
-        }, 5000);
-    };
-
-    const refreshAllBoardNews = async () => {
-        fetchData(`/admin/refreshAllBoardNews`);
-    };
-
-    const refreshBoardNewsMain = async (boardId) => {
-        fetchData(`${url}/admin/refreshBoardNewsMain/${boardId}`);
-    };
-
-    const editBoardForm = (board) => {
-        setFormData(board);
-        setShow(true);
-    };
-
-    const addBoardForm = () => {
-        setFormData(null);
-        setShow(true);
-    };
-
-    const columns = [
-        {
-            Header: "Name",
-            id: "name",
-            accessor: "name",
-            Cell: ({ row }) => (
-                <>
-                    {row.original.name} {`\(${row.original.websites_number}\)`}{" "}
-                </>
-            ),
+            websites: [
+                {
+                    name: "NIL",
+                    url: "https://nil.org.pl/aktualnosci",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+                {
+                    name: "Bielska",
+                    url: "https://pulsmedycyny.pl/najnowsze/",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+            ],
         },
         {
-            Header: "Refr.",
-            id: "time",
-            accessor: "updated_at",
-            Cell: ({ row }) => (
-                <>
-                    <Moment
-                        format="HH:mm"
-                        date={row.original.updated_at}
-                    ></Moment>
-                    <br />
-                    <Moment
-                        format="DD.MM"
-                        date={row.original.updated_at}
-                    ></Moment>
-                </>
-            ),
+            id: 26,
+            name: "Medycyna",
+            created_at: "2021-05-21T18:25:46.000000Z",
+            updated_at: "2022-07-10T08:53:04.000000Z",
+            unreaded_news: 16,
+            websites_number: 2,
+            pivot: {
+                user_id: 1,
+                board_id: 26,
+            },
+            websites: [
+                {
+                    name: "NIL",
+                    url: "https://nil.org.pl/aktualnosci",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+                {
+                    name: "Bielska",
+                    url: "https://pulsmedycyny.pl/najnowsze/",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+            ],
         },
         {
-            Header: "News",
-            id: "unreaded_news",
-            accessor: "unreaded_news",
-            Cell: ({ row }) => (
-                <>
-                    <Link to={`/admin/showBoardNews/${row.original.id}`}>
-                        {row.original.unreaded_news > 0 ? (
-                            <Button
-                                variant="outline-danger"
-                                type="button"
-                                size="sm"
-                                className="btn-circle"
-                            >
-                                {row.original.unreaded_news}
-                            </Button>
-                        ) : (
-                            <Button
-                                variant="outline-success"
-                                type="button"
-                                size="sm"
-                                className="btn-circle"
-                            >
-                                {row.original.unreaded_news}
-                            </Button>
-                        )}
-                    </Link>
-                </>
-            ),
-        },
-
-        {
-            Header: "Board",
-            id: "bbb",
-            Cell: ({ row }) => (
-                <>
-                    <Link to={`/admin/board/${row.original.id}`}>
-                        <Button
-                            variant="primary"
-                            type="button"
-                            size="sm"
-                            className="btn-circle"
-                        >
-                            <BsFillEyeFill />
-                        </Button>
-                    </Link>
-                </>
-            ),
+            id: 28,
+            name: "NIL",
+            created_at: "2021-05-22T10:51:10.000000Z",
+            updated_at: "2022-07-10T08:53:06.000000Z",
+            unreaded_news: 7,
+            websites_number: 1,
+            pivot: {
+                user_id: 1,
+                board_id: 28,
+            },
+            websites: [
+                {
+                    name: "NIL",
+                    url: "https://nil.org.pl/aktualnosci",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+                {
+                    name: "Bielska",
+                    url: "https://pulsmedycyny.pl/najnowsze/",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+            ],
         },
         {
-            Header: "Edit",
-            id: "edit",
-            Cell: ({ row }) => (
-                <>
-                    <Button
-                        id={row.original.id}
-                        onClick={(e) => editBoardForm(row.original)}
-                        variant="info"
-                        type="button"
-                        size="sm"
-                        className="btn-circle"
-                    >
-                        <BsWrench />
-                    </Button>
-                </>
-            ),
-        },
-        {
-            Header: "Delete",
-            id: "cc",
-            Cell: ({ row }) => (
-                <>
-                    <Button
-                        id={row.original.id}
-                        onClick={(e) =>
-                            deleteBoardConfirmation(row.original.id)
-                        }
-                        variant="danger"
-                        type="button"
-                        size="sm"
-                        className="btn-circle"
-                    >
-                        <BsFillTrashFill />
-                    </Button>
-                </>
-            ),
-        },
-        {
-            Header: "Refr.",
-            id: "refres",
-            Cell: ({ row }) => (
-                <>
-                    <Button
-                        id={row.original.id}
-                        onClick={(e) => refreshBoardNewsMain(row.original.id)}
-                        variant="success"
-                        type="button"
-                        size="sm"
-                        className="btn-circle"
-                    >
-                        <BsArrowRepeat />
-                    </Button>
-                </>
-            ),
+            id: 29,
+            name: "Puls",
+            created_at: "2021-07-03T18:44:10.000000Z",
+            updated_at: "2022-07-10T08:53:07.000000Z",
+            unreaded_news: 15,
+            websites_number: 1,
+            pivot: {
+                user_id: 1,
+                board_id: 29,
+            },
+            websites: [
+                {
+                    name: "NIL",
+                    url: "https://nil.org.pl/aktualnosci",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+                {
+                    name: "Bielska",
+                    url: "https://pulsmedycyny.pl/najnowsze/",
+                    selector: "h2",
+                    board_id: 22,
+                    priority: 2,
+                },
+            ],
         },
     ];
+
+    const boards = data.map((board) => {
+        return <Board data={board} />;
+    });
+
+    const websitesNumber = () => {
+        let number = 0;
+        data.forEach((board) => {
+            number += board.websites_number;
+        });
+
+        return number;
+    };
+
+    const [formData, setFormData] = useState(null);
+    console.log(formData);
+
     return (
         <>
-            {alert.view && (
-                <Alert
-                    variant={alert.variant}
-                    onClose={() => setAlert({})}
-                    dismissible
-                >
-                    {alert.text}
-                </Alert>
-            )}
-
-            <Modal
-                show={show}
-                onHide={handleClose}
-                animation={true}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Header closeButton></Modal.Header>
-                <Modal.Body>
-                    <AddBoardForm
-                        addBoard={addBoard}
-                        boardToEdit={formData}
-                        editBoard={editBoard}
+            <Wrapper>
+                <Header>
+                    <h1>Boards</h1>
+                    <IconPlus
+                        size={25}
+                        onClick={() =>
+                            setFormData({ action: "addBoard", data: null })
+                        }
                     />
-                </Modal.Body>
-            </Modal>
+                </Header>
+                <Info>
+                    <InfoItem>Boards: {data.length}</InfoItem>
+                    <InfoItem>Websites: {websitesNumber()}</InfoItem>
+                </Info>
+                {boards}
 
-            {isError && <Alert variant="danger">Something go wrong</Alert>}
-
-            <h2 className="mt-5">Boards</h2>
-            <div className="d-flex justify-content-between mt-3">
-                <Button variant="success" onClick={addBoardForm}>
-                    <BsPlus /> Add Board
-                </Button>
-                {/* <Button onClick={refreshAllBoardNews}>Refresh </Button> */}
-            </div>
-            {isLoading && <LoaderData />}
-
-            {data && (
-                <>
-                    <DataTable data={data} columns={columns} />
-                </>
-            )}
+                {formData && (
+                    <Modal data={formData} setFormData={setFormData} />
+                )}
+            </Wrapper>
         </>
     );
-}
+};
 
 export default Boards;

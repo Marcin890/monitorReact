@@ -26,8 +26,8 @@
 
 <body>
     <div id="app" class="app-main">
-        <nav class="navbar navbar-expand-md navbar-dark  bg-info shadow-sm">
-            <div class="container">
+        <nav class="navbar navbar-expand-md navbar-dark   shadow-sm">
+            <div class="container-fluid">
                 <a class="navbar-brand" href="" {{ route('boardIndex') }}">
                     <img class="logo-image" src="{{asset('assets/img/logo.svg')}}"><span
                         class="logo-bold">Monitor</span><span class="logo-light">News</span>

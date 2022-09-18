@@ -3,7 +3,7 @@
 
 const prod = {
     url: {
-        API_URL: "http://monitornews.pl",
+        API_URL: "http://monitornews.com.pl",
     },
 };
 const dev = {

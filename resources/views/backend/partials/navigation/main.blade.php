@@ -1,8 +1,7 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-info shadow-sm">
-    <div class="container">
+<nav class="navbar navbar-expand-md navbar-dark shadow-sm">
+    <div class="container-fluid">
         <a class="navbar-brand" href="{{ route('boardIndex') }}">
-            <img class="logo-image" src="{{asset('assets/img/logo.svg')}}"><span class="logo-bold">Monitor</span><span
-                class="logo-light">News</span>
+            <img class="logo-image" src="{{asset('assets/img/logo.svg')}}">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
