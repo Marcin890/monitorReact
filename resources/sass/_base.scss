@@ -1,15 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap");
 
-// Typography
 
-h1 {
-    font-weight: bold;
-    font-size: 24px;
-}
-
-p, li  {
-    color: #707070;
-}
+// App
 
 .app-main {
     min-height: 100vh;
@@ -23,100 +14,6 @@ p, li  {
 .app-container {
     padding-left: 20px;
     padding-right: 20px;
-}
-.loader-container {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.iframeSize {
-    width: 100%;
-    height: 90vh;
-}
-// Link
-a {
-    color: white;
-     
-}
-// Fonts
-body {
-    font-family: "Montserrat", sans-serif;
-   
-   
-}
-
-// Navigation
-.nav-item {
-    margin-bottom: 10px;
-}
-// Buttons
-.btn {
-    padding: 10px 20px;
-    border-radius: 20px;
-    font-size: 14px;
-}
-
-.btn-circle {
-    width: 32px;
-    height: 32px;
-    padding: 6px 0px;
-    border-radius: 16px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 1.42857;
-}
-
-button {
-display: inline-block;
-line-height: 1.5;
-text-align: center;
-user-select: none;
-vertical-align: middle;
-padding: 4px 8px;
-margin: 0;
-font-size: 10px;
-font-weight: normal;
-
-outline: none;
-box-sizing: content-box;
-text-transform: uppercase;
-border: 1px solid;
-background: none;
-
-}
-// table
-th {
-    text-transform: uppercase;
-}
-
-table {
-    font-size: 12px;
-}
-table td {
-    padding: 0.5rem 0.5rem 0.5rem 0rem !important;
-    vertical-align:top;
-    font-size: 12px;
-}
-@include media-breakpoint-down(sm) {
-    td,
-    th {
-        padding-left: 0.2rem !important;
-        padding-right: 0.2rem !important;
-        font-size: 0.7rem !important;
-    }
-}
-
-// Inputs
-.form-control {
-    border-radius: 20px;
 }
 
 // Nav
@@ -159,38 +56,6 @@ table td {
     color: white;
 }
 
-// Footer
-.footer {
-    background: $light;
-    padding: 16px 0px;
-    font-size: 12px;
-    // color: white;
-}
-
-// Modals
-.modal-test {
-    background: $light;
-}
-
-.main-background {
-    background-image: url("../../public/assets/img/lighthouse.png");
-    background-size: cover;
-}
-.white {
-    color: white !important;
-}
-
-// Typography
-
-.changed {
-    background: lightgreen;
-}
-
-// Card
-.card-header:hover {
-    background: $light;
-    cursor: pointer;
-}
 
 // Logo
 .logo-image {
@@ -207,102 +72,6 @@ table td {
 }
 .navbar-brand {
     font-size: 1.1rem;
-}
-
-// Break
-.text-br {
-    overflow-wrap: none;
-    word-break: none;
-    @include media-breakpoint-down(md) {
-        overflow-wrap: break-word;
-        word-break: break-word;
-    }
-}
-
-// Better typography
-.typo-form {
-    font-size: 0.75rem;
-    min-height: 100px;
-    display: block;
-    width: 100%;
-    padding: 0.375rem 0.75rem;
-    font-weight: 400;
-
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 20px;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-    &:focus-visible {
-        outline: none;
-    }
-}
-
-.sli {
-    height: 289px;
-    padding: 10px;
-    width: 230px;
-    background: #214143;
-    color: white;
-    font-weight: 400 !important;
-}
-
-.sli-title {
-    font-size: 26px !important;
-
-    margin: 0px !important;
-    padding: 0px !important;
-    padding-top: 6px !important;
-    padding-bottom: 13px !important;
-    font-family: Verdana, Arial, sans-serif;
-    letter-spacing: -1px;
-    line-height: 31px;
-}
-
-.sli-text {
-    display: block;
-    font-size: 12px !important;
-    line-height: 17.1429px !important;
-    font-family: Arial, Helvetica;
-}
-
-.sli-news {
-    color: #1c7f84;
-    font-family: Verdana, Arial, sans-serif;
-    width: 300px;
-    font-size: 12px;
-    line-height: 20px;
-    font-weight: 400;
-}
-
-.sli-list {
-    list-style-type: square;
-}
-//
-
-.interp-1 {
-    border-left: 3px $danger solid;
-    padding-left: 0.5em;
-}
-.interp-2 {
-    border-left: 3px $success solid;
-    padding-left: 0.5em;
-}
-.interp-3 {
-    border-left: 3px $info solid;
-    padding-left: 0.5em;
-}
-
-.status-unread {
-}
-
-.status-read {
-    color: rgb(160, 160, 160);
-    a {
-        color: rgb(160, 160, 160);
-    }
 }
 
 .bg-info {
